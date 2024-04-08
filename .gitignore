@@ -1,0 +1,6 @@
+
+speed_model_Volo448_dispBrown
+*.pt
+turn_angle_model_finetune
+dispersion_model_regnetx64
+dispersion_model_regnetx64_finetuned
