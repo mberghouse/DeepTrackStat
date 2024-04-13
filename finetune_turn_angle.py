@@ -20,7 +20,8 @@ import re
 device='cuda'
 sim_dir = os.listdir('all_sims')
 file_dir = os.listdir('all_traj_files')
-# Custom sorting key function
+
+    
 def sort_key(item):
     if '_brown' in item:
         return (1, int(item[3:-6]))
@@ -90,37 +91,42 @@ for i in range(len(test_image_files)):
         
 
 
-del im_dir
-gc.collect()
+base='all_traj_files/'
+print(base)
+target_length=500
 
 
+#def calculate_angles(train_dirs):
+target_length=500
+angles = torch.zeros([len(train_dirs),target_length])
+import matplotlib.pyplot as plt
+from scipy.stats import exponweib,lognorm, johnsonsb,expon
+import torch
+import numpy as np
 
 def calculate_angles(x_arr, y_arr):
     traj_stats=[]
-    try:
-        for n in range(x_arr.shape[1]):
-            x_diff = np.diff(x_arr[:,n])
-            y_diff = np.diff(y_arr[:,n])
-            angles=np.zeros((len(x_diff),1))
-            for i in range(len(x_diff)-1):
-                theta_1=np.arctan(y_diff[i]/x_diff[i])
-                theta_2=np.arctan(y_diff[i+1]/x_diff[i+1])
-                angles[i]=(theta_2-theta_1)*(180/np.pi)
-        
-            traj_stats.append([n, angles])
-        angle_array=[]
-        for i in range(len(traj_stats)):
-            section1=traj_stats[i][1]
-            section1=np.reshape(section1,(len(section1),))
-            angle_array=np.hstack([section1,angle_array])
-        
-        angle_array
-        angle_array=np.abs(angle_array[~np.isnan(angle_array)])
-        angle_array = interpolate_vectors(np.sort(angle_array), target_length)
-        angle_array[angle_array==0]=0.1
-    except:
-        angle_array=0
-        print ('error with angle calculation')
+    for n in range(x_arr.shape[1]):
+        x_diff = np.diff(x_arr[:,n])
+        y_diff = np.diff(y_arr[:,n])
+        angles=np.zeros((len(x_diff),1))
+        for i in range(len(x_diff)-1):
+            theta_1=np.arctan(y_diff[i]/x_diff[i])
+            theta_2=np.arctan(y_diff[i+1]/x_diff[i+1])
+            angles[i]=(theta_2-theta_1)*(180/np.pi)
+    
+        traj_stats.append([n, angles])
+    angle_array=[]
+    vel_array=[]
+    for i in range(len(traj_stats)):
+        section1=traj_stats[i][1]
+        section1=np.reshape(section1,(len(section1),))
+        angle_array=np.hstack([section1,angle_array])
+    
+    angle_array
+    angle_array=np.abs(angle_array[~np.isnan(angle_array)])
+    angle_array = interpolate_vectors(np.sort(angle_array), target_length)
+    angle_array[angle_array==0]=0.1
     return angle_array
     
 def interpolate_vectors(vector, target_length):
@@ -132,26 +138,31 @@ def interpolate_vectors(vector, target_length):
     # Perform linear interpolation
     interpolated_vector = np.interp(new_x, old_x, vector)
     return interpolated_vector
-    
 
-
+scales = torch.zeros(len(train_dirs),2)
+# i=0
 base='all_traj_files/'
-print(base)
 target_length=500
 angles = torch.zeros(len(train_dirs),target_length)
-print(angles.shape)
 for i in range(len(train_dirs)):
     x_arr= np.array(pd.read_csv(base+train_dirs[i][1], header=None))
     y_arr= np.array(pd.read_csv(base+train_dirs[i][0], header=None))
     angle_array = calculate_angles(x_arr,y_arr)
-    print(i)
 
     angles[i,:] = torch.tensor(angle_array)
-
-print(angles.shape)
     
+    a,b = expon.fit(angle_array)
     
-
+    # Generate points for plotting the fitted distribution
+    xtorch= np.linspace(expon.ppf(0.01, a,b),
+                    expon.ppf(0.99, a,b), target_length)
+    
+    distr_torch=expon.pdf(xtorch, a,b)
+    scales[i,:] = torch.tensor([a,b])
+    plt.plot(xtorch,distr_torch)
+    #plt.show()
+    
+scales_test = torch.zeros(len(test_dirs),2)
 # target_length=1000
 angles_test = torch.zeros(len(test_dirs),target_length)
 for i in range(len(test_dirs)):
@@ -161,9 +172,17 @@ for i in range(len(test_dirs)):
 
     angles_test[i,:] = torch.tensor(angle_array)
     
-print(angles_test.shape)
-
-
+    a,b = expon.fit(angle_array)
+    
+    # Generate points for plotting the fitted distribution
+    xtorch= np.linspace(expon.ppf(0.01, a,b),
+                    expon.ppf(0.99, a,b), target_length)
+    
+    distr_torch=expon.pdf(xtorch, a,b)
+    scales_test[i,:] = torch.tensor([a,b])
+    plt.plot(xtorch,distr_torch)
+    #plt.show()
+# torch.max(scales_test,dim=0)
 images_train = images_train/255
 images_test = images_test/255
 
@@ -171,7 +190,7 @@ images_test = images_test/255
 gc.collect()
 
 model = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=True)
-model.load_state_dict(torch.load('turn_angle_model_Volod1_384_dispBrownv2'))
+model.load_state_dict(torch.load('turn_angle_model_Volod1_384_dispBrownv3'))
 model.to(device)
 print(model)
 
@@ -255,14 +274,14 @@ batch_size = 10
 test_dataloader = DataLoader(dataset_test, batch_size=batch_size, shuffle=False, drop_last=False, num_workers=0)
 
 criterion = nn.MSELoss()
-optimizer = optim.AdamW(model.parameters(),lr=0.00003,weight_decay=.1)
-gamma = .9995
+optimizer = optim.AdamW(model.parameters(),lr=0.0001,weight_decay=.001)
+gamma = .9994
 scheduler = ExponentialLR(optimizer, gamma=gamma)
 torch.cuda.empty_cache()
 gc.collect()
 
 # Training loop
-num_epochs = 200
+num_epochs = 400
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
@@ -299,4 +318,4 @@ for epoch in range(num_epochs):
     torch.cuda.empty_cache()
     gc.collect()
 print("Training finished!")
-torch.save(model.state_dict(), 'turn_angle_model_Volod1_384_dispBrownv3')
+torch.save(model.state_dict(), 'turn_angle_model_Volod1_384_dispBrownv4')
