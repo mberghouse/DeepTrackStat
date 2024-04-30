@@ -25,3 +25,6 @@ speed_model_volod1_224px_disp_4_21
 speed_model_volod1_224px_dispBrown_4_21
 speed_model_volod1_384px_disp_4_22
 speed_model_volod1_patch_4x224px_dispBrown_4_21
+*.jpg
+*.csv
+/models
