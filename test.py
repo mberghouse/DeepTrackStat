@@ -89,7 +89,7 @@ directories = ['test_sims_homo/1000part_16xspeed/','test_sims_homo/1000part_4xsp
 'Paen_5ulh_pre/', 'shew_noflow/8040_20x_002_frames/', 'shew_noflow/808_20x_20fps_005_frames/']
 
 file_error=[]
-for f_idx in range(len(directories)):
+for f_idx in range(3,len(directories)):
     print(len(filenames), len(directories))
     base=directories[f_idx]
     print(base)
@@ -460,7 +460,7 @@ for f_idx in range(len(directories)):
 
             out4 =F.softmax((model4((x).to(device)).detach().cpu()),1).numpy()
             out5 =F.softmax((model5((x).to(device)).detach().cpu()),1).numpy()
-            out6 =F.softmax((model6((x).to(device)).detach().cpu()),1).numpy()
+            out6 =F.softmax((model6((x).to(device)).detach().cpu()),1).numpy() # class 4, close to 1
             out7 =F.softmax((model7((1-x).to(device)).detach().cpu()),1).numpy()
             out8 =F.softmax((model8((x).to(device)).detach().cpu()),1).numpy()
             out9 =F.softmax((model9((x2).to(device)).detach().cpu()),1).numpy()
@@ -468,16 +468,18 @@ for f_idx in range(len(directories)):
             out11 =F.softmax((model11((x2).to(device)).detach().cpu()),1).numpy()
             out12 =F.softmax((model12((x2).to(device)).detach().cpu()),1).numpy()
             out13 =F.softmax((model13((x2).to(device)).detach().cpu()),1).numpy()
-            out14 =F.softmax((model15((x2).to(device)).detach().cpu()),1).numpy()
+            out14 =F.softmax((model15((x2).to(device)).detach().cpu()),1).numpy() #class 2 close to cslaa 3
             out15 =F.softmax((model15((x).to(device)).detach().cpu()),1).numpy() # class 4
-            out16 =F.softmax((model16((x).to(device)).detach().cpu()),1).numpy() #class 2
+            out16 =F.softmax((model16((x).to(device)).detach().cpu()),1).numpy() #class 2 .25
             out17 =F.softmax((model17((x).to(device)).detach().cpu()),1).numpy() # class 2
             out18 =F.softmax((model18((x).to(device)).detach().cpu()),1).numpy() # class 2
             out19 =F.softmax((model19((x).to(device)).detach().cpu()),1).numpy() # class 3
-            out20 =F.softmax((model20((x).to(device)).detach().cpu()),1).numpy() # class 2
+            out20 =F.softmax((model20((x).to(device)).detach().cpu()),1).numpy() # class 2, .22
 
 
-            out=out20#(out0*2+out3*40+out5*2+out7*2+out10+out13)/48
+            out=(out14+out16*3.1+out17*1.9+out20+out10*.3+out19*.2+out7*.6)/8.1#(out16*4+out17*2+out14*.5)/6.5#(out0*2+out3*40+out5*2+out7*2+out10+out13)/48
+            out[:,2] = out[:,2]+.075
+            out[:,4] = out[:,4]+.025
             #out = (out4*10+out6*10+out7*1+out8*3+out9*15+out10*1+out11*2+out12*1+out13*1)/44
 
             # #x1 = torchvision.transforms.functional.resize(x, 448)
@@ -922,25 +924,26 @@ for f_idx in range(len(directories)):
             if class_num==4:
                 #1ulh
                 #class 3 (x<3)
-                out=(out*50+out4*6+(out14)*15+out17*50+out18*15+(out17_2)*20+(out19_2)*25+(out20)*10+(out8)*2.5+(out9)*13.5+out26*2)/230
-                out = out*.8
+                out=(out*50+out4*6+(out14)*15+out17*50+out18*15+(out17_2)*20+(out19_2)*25+(out20)*10+(out8)*1.5+(out9)*.5+out26*2)/250
+                out = out*.6
             elif class_num==3:
                 #class 2 (3<x<6)
-                out=(out*50+out2*10+out6*4+out11*5+out14*4+out15*2+out17*10+out18*8+out19*26+out20*2+out9*3+out22*1+out23*1+out24*1+out25*1+out26*60)/160
+                out=(out*100+out2*10+out6*4+out11*5+out14*4+out15*2+out17*10+out18*8+out19*26+out20*2+out9*3+out22*1+out23*1+out24*1+out25*1+out26*60)/205
             elif class_num==2:
                 #5ulh
                 #class 1 (6<x<10)
-                out=(out*50+out3*8+out4*32+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5)/216
-                out = out*1.2
+                out = (out*40+out9*70+out11*30+out27*10+out24*20+out8*10)/180
+                #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
+                out = out*1.6
             elif class_num==1:
                 #5ulh
                 #class 1 (6<x<10)
-                out=(out*50+out3*8+out4*32+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5)/216    
-                out = out*1.4
+                out=(out*50+out3*8+out9*30+out4*10+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5)/224    
+                out = out*1.8
             else:
                 #class 0 (x>10)
-                out=(out*50+out3*8+out4*64+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*10)/240
-                out = out*1.6
+                out = (out*40+out9*70+out11*30+out27*10+out24*20+out8*10)/180
+                out = out*2
             # outputs.append(out)
             
             
