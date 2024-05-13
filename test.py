@@ -89,7 +89,7 @@ directories = ['test_sims_homo/1000part_16xspeed/','test_sims_homo/1000part_4xsp
 'Paen_5ulh_pre/', 'shew_noflow/8040_20x_002_frames/', 'shew_noflow/808_20x_20fps_005_frames/']
 
 file_error=[]
-for f_idx in range(3,len(directories)):
+for f_idx in range(0,len(directories)):
     print(len(filenames), len(directories))
     base=directories[f_idx]
     print(base)
@@ -444,6 +444,7 @@ for f_idx in range(3,len(directories)):
     #outputs3=[]
     
     outputs1=[]
+    count=0
     with torch.no_grad():
         for x in test_dataloader2:
             if torch.mean(x)>.5:
@@ -477,9 +478,11 @@ for f_idx in range(3,len(directories)):
             out20 =F.softmax((model20((x).to(device)).detach().cpu()),1).numpy() # class 2, .22
 
 
-            out=(out14+out16*3.1+out17*1.9+out20+out10*.3+out19*.2+out7*.6)/8.1#(out16*4+out17*2+out14*.5)/6.5#(out0*2+out3*40+out5*2+out7*2+out10+out13)/48
-            out[:,2] = out[:,2]+.075
-            out[:,4] = out[:,4]+.025
+            out=(out11*5+out14*.5+out16*15.5+out17*18.6+out19*3+out5*3.5+out10*2.4+out7*.6+out13*.3+out6*2+out18*.5)/51.9#(out16*4+out17*2+out14*.5)/6.5#(out0*2+out3*40+out5*2+out7*2+out10+out13)/48
+            out[:,1] = out[:,1]+.035
+            out[:,2] = out[:,2]+.11
+            out[:,3] = out[:,3]+.035
+            out[:,4] = out[:,4]-.025
             #out = (out4*10+out6*10+out7*1+out8*3+out9*15+out10*1+out11*2+out12*1+out13*1)/44
 
             # #x1 = torchvision.transforms.functional.resize(x, 448)
@@ -498,8 +501,10 @@ for f_idx in range(3,len(directories)):
 
             # #out=np.mean(np.vstack((out0+out1*3+out2+out3)/6),0)
             # out = (out4*1+out5*2+out6*2+out7*6+out8+out9)/13
-
+            
+            # Add a classifier/use Trackpy to reduce the weights of late time predictions (how many particles in the image?)
             outputs1.append(out)
+            count=count+1
 
     # print(np.mean(np.vstack(out0),0))
     # print(np.mean(np.vstack(out1),0))
@@ -903,7 +908,8 @@ for f_idx in range(3,len(directories)):
             out22 = np.sort(model22((1-x3[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             out23 = np.sort(model23((1-x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             out25 = np.sort(model25((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out26 = np.sort(model26((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            out26 = np.sort(model26((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            out26_2 = np.sort(model26((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             out27 = np.sort(model27((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             #out28 = np.sort(model28((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             # out29 = np.sort(model29((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
@@ -924,26 +930,27 @@ for f_idx in range(3,len(directories)):
             if class_num==4:
                 #1ulh
                 #class 3 (x<3)
-                out=(out*50+out4*6+(out14)*15+out17*50+out18*15+(out17_2)*20+(out19_2)*25+(out20)*10+(out8)*1.5+(out9)*.5+out26*2)/250
+                out=(out*160+out4*6+(out14)*15+out14_2*60+out17*50+out18*15+(out17_2)*20+(out19_2)*25+(out20)*10+(out8)*1.5+(out9)*.5+out26_2*2)/365
                 out = out*.6
             elif class_num==3:
                 #class 2 (3<x<6)
-                out=(out*100+out2*10+out6*4+out11*5+out14*4+out15*2+out17*10+out18*8+out19*26+out20*2+out9*3+out22*1+out23*1+out24*1+out25*1+out26*60)/205
+                out=(out*200+out2*10+out6*4+out11*5+out14*4+out15*2+out17*10+out18*8+out19*26+out20*2)/271
             elif class_num==2:
                 #5ulh
                 #class 1 (6<x<10)
-                out = (out*40+out9*70+out11*30+out27*10+out24*20+out8*10)/180
+                out = (out*230+out9*70+out11*30+out27*10+out24*20+out26*80+out19*10+out18*10+out13*20)/480
                 #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
-                out = out*1.6
+                out = out*1.55
             elif class_num==1:
                 #5ulh
                 #class 1 (6<x<10)
-                out=(out*50+out3*8+out9*30+out4*10+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5)/224    
+                out = (out*250+out9*120+out11*30+out27*10+out24*20+out26*120+out19*10+out18*10+out13*20)/590
+                #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
                 out = out*1.8
             else:
                 #class 0 (x>10)
-                out = (out*40+out9*70+out11*30+out27*10+out24*20+out8*10)/180
-                out = out*2
+                out = (out*200+out9*70+out11*30+out27*10+out24*20+out26*80)/410
+                out = out*1.3
             # outputs.append(out)
             
             
@@ -1042,8 +1049,8 @@ for f_idx in range(3,len(directories)):
     vels = vels[vels>0]
 
     criterion = nn.MSELoss()
-    speed_loss = criterion(torch.tensor(np.sort(interpolate_vectors(out, len(vels)))), torch.tensor(np.sort(vels)))
-    mean_loss =  np.abs(np.mean(vels)-np.mean(out))
+    speed_loss = criterion(torch.tensor(np.sort(interpolate_vectors(np.sort(out[out>0]), len(vels)))), torch.tensor(np.sort(vels)))
+    mean_loss =  np.abs(np.mean(vels)-np.mean(out[out>0]))
     print('Mean Speed from PT: ', np.mean(vels))
     print('Speed Loss: ', speed_loss)
     print('Absolute Error of Average Speed: ',mean_loss)
