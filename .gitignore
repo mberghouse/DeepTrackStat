@@ -47,7 +47,13 @@ speed_model_volod1_patch_4x224px_dispBrown_4_21
 !testing/simulated_imagery/sim115_brown/*.jpg
 !testing/simulated_imagery/sim119_brown/*.jpg
 !testing/simulated_imagery/sim120_brown/*.jpg
-
+!testing/simulated_imagery/sim2201/*.jpg
+!testing/simulated_imagery/sim2210/*.jpg
+!testing/simulated_imagery/sim2215/*.jpg
+!testing/simulated_imagery/sim2220/*.jpg
+!testing/simulated_imagery/sim2230/*.jpg
+!testing/simulated_imagery/sim2235/*.jpg
+!testing/simulated_imagery/sim2240/*.jpg
 *.csv
 !testing/
 !testing/ground_truth_trajectories/
