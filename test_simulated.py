@@ -2221,7 +2221,7 @@ for f_idx in range(0,len(directories)):
                 out = out*.94
             if np.mean(out) >=1:
                 out = .99
-            out = out-.06
+            out = out-.03
             outputs.append(out)
     print('directionalities: ', out0, out1, out2, out3)
     directionality = []

@@ -67,6 +67,10 @@ speed_model_volod1_patch_4x224px_dispBrown_4_21
 !testing/simulated_imagery/sim2258/*.jpg
 !testing/simulated_imagery/sim2259/*.jpg
 !testing/simulated_imagery/sim2260/*.jpg
+!testing/simulated_imagery/test1/*.jpg
+!testing/simulated_imagery/test2/*.jpg
+!testing/simulated_imagery/test5/*.jpg
+!testing/simulated_imagery/test8/*.jpg
 
 
 *.csv
