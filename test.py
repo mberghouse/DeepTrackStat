@@ -519,6 +519,10 @@ final_out_direction=[]
 final_true_direction=[]
 direction_r2=[]
 
+final_true_direction=[]
+final_out_direction=[]
+final_error_direction=[]
+
 for f_idx in range(0,len(directories)):
     print(len(filenames), len(directories))
     base=directories[f_idx]
@@ -604,490 +608,492 @@ for f_idx in range(0,len(directories)):
     # #class_num=1
 
 
-    class Patch_model2(nn.Module):
-        def __init__(self):
-            super(Patch_model2, self).__init__()
-            self.m0 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0.0,num_classes=2000,pretrained=True)
-            self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+    # class Patch_model2(nn.Module):
+        # def __init__(self):
+            # super(Patch_model2, self).__init__()
+            # self.m0 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0.0,num_classes=2000,pretrained=True)
+            # self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
 
-            self.fc1=nn.Linear(2000, 1000)
-            self.fc2=nn.Linear(1000,500)
-
-
-        def forward(self, x):
-            l2=224
-            x1 = x[:,:,0:l2,0:l2]
-            x2 = x[:,:,0:l2,l2:]
-            x3 = x[:,:,l2:,0:l2]
-            x4 = x[:,:,l2:,l2:]
-            #torch.cuda.empty_cache()
-            #gc.collect()
-            x = F.gelu(self.m0(x))
-            x1 = F.gelu(self.m1(x1))
-            x2 = F.gelu(self.m2(x2))
-            x3 = F.gelu(self.m3(x3))
-            x4 = F.gelu(self.m4(x4))
-            x0 = torch.cat([x1,x2,x3,x4],dim=1)
-            del x1,x2, x3, x4
-            x = x*x0
-            x = F.gelu(self.fc1(x))
-            x = self.fc2(x)
-            return x#,x2,x3,x4
-
-    class Patch_model3(nn.Module):
-        def __init__(self):
-            super(Patch_model3, self).__init__()
-            self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-
-            self.fc1=nn.Linear(2000, 1000)
-            self.fc2=nn.Linear(1000,500)
+            # self.fc1=nn.Linear(2000, 1000)
+            # self.fc2=nn.Linear(1000,500)
 
 
-        def forward(self, x):
-            l2=224
-            x1 = x[:,:,0:l2,0:l2]
-            x2 = x[:,:,0:l2,l2:]
-            x3 = x[:,:,l2:,0:l2]
-            x4 = x[:,:,l2:,l2:]
-            #torch.cuda.empty_cache()
-            #gc.collect()
-            x1 = F.gelu(self.m1(x1))
-            x2 = F.gelu(self.m2(x2))
-            x3 = F.gelu(self.m3(x3))
-            x4 = F.gelu(self.m4(x4))
-            x = torch.cat([x1,x2,x3,x4],dim=1)
-            del x1,x2, x3, x4
-            x = F.gelu(self.fc1(x))
-            x = self.fc2(x)
-            return x#,x2,x3,x4
+        # def forward(self, x):
+            # l2=224
+            # x1 = x[:,:,0:l2,0:l2]
+            # x2 = x[:,:,0:l2,l2:]
+            # x3 = x[:,:,l2:,0:l2]
+            # x4 = x[:,:,l2:,l2:]
+            # #torch.cuda.empty_cache()
+            # #gc.collect()
+            # x = F.gelu(self.m0(x))
+            # x1 = F.gelu(self.m1(x1))
+            # x2 = F.gelu(self.m2(x2))
+            # x3 = F.gelu(self.m3(x3))
+            # x4 = F.gelu(self.m4(x4))
+            # x0 = torch.cat([x1,x2,x3,x4],dim=1)
+            # del x1,x2, x3, x4
+            # x = x*x0
+            # x = F.gelu(self.fc1(x))
+            # x = self.fc2(x)
+            # return x#,x2,x3,x4
 
-    class Patch_model4(nn.Module):
-        def __init__(self):
-            super(Patch_model4, self).__init__()
-            self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+    # class Patch_model3(nn.Module):
+        # def __init__(self):
+            # super(Patch_model3, self).__init__()
+            # self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
 
-            self.fc0=nn.Linear(2000, 500)
-            #self.fc2=nn.Linear(1000,500)
-
-
-        def forward(self, x):
-            l2=224
-            x1 = x[:,:,0:l2,0:l2]
-            x2 = x[:,:,0:l2,l2:]
-            x3 = x[:,:,l2:,0:l2]
-            x4 = x[:,:,l2:,l2:]
-            #torch.cuda.empty_cache()
-            #gc.collect()
-            x1 = F.gelu(self.m1(x1))
-            x2 = F.gelu(self.m2(x2))
-            x3 = F.gelu(self.m3(x3))
-            x4 = F.gelu(self.m4(x4))
-            x = torch.cat([x1,x2,x3,x4],dim=1)
-            del x1,x2, x3, x4
-            #x = F.gelu(self.fc1(x))
-            x = self.fc0(x)
-            return x#,x2,x3,x4
+            # self.fc1=nn.Linear(2000, 1000)
+            # self.fc2=nn.Linear(1000,500)
 
 
-    class Patch_model(nn.Module):
-        def __init__(self):
-            super(Patch_model, self).__init__()
-            self.m0 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0.0,num_classes=2000,pretrained=True)
-            self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
-            self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+        # def forward(self, x):
+            # l2=224
+            # x1 = x[:,:,0:l2,0:l2]
+            # x2 = x[:,:,0:l2,l2:]
+            # x3 = x[:,:,l2:,0:l2]
+            # x4 = x[:,:,l2:,l2:]
+            # #torch.cuda.empty_cache()
+            # #gc.collect()
+            # x1 = F.gelu(self.m1(x1))
+            # x2 = F.gelu(self.m2(x2))
+            # x3 = F.gelu(self.m3(x3))
+            # x4 = F.gelu(self.m4(x4))
+            # x = torch.cat([x1,x2,x3,x4],dim=1)
+            # del x1,x2, x3, x4
+            # x = F.gelu(self.fc1(x))
+            # x = self.fc2(x)
+            # return x#,x2,x3,x4
 
-            self.fc1=nn.Linear(4000, 1000)
-            self.fc2=nn.Linear(1000,500)
+    # class Patch_model4(nn.Module):
+        # def __init__(self):
+            # super(Patch_model4, self).__init__()
+            # self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
 
-
-        def forward(self, x):
-            l2=224
-            x1 = x[:,:,0:l2,0:l2]
-            x2 = x[:,:,0:l2,l2:]
-            x3 = x[:,:,l2:,0:l2]
-            x4 = x[:,:,l2:,l2:]
-            #torch.cuda.empty_cache()
-            #gc.collect()
-            x = F.gelu(self.m0(x))
-            x1 = F.gelu(self.m1(x1))
-            x2 = F.gelu(self.m2(x2))
-            x3 = F.gelu(self.m3(x3))
-            x4 = F.gelu(self.m4(x4))
-            x0 = torch.cat([x1,x2,x3,x4],dim=1)
-            del x1,x2, x3, x4
-            x = torch.cat([x,x0],dim=1)#x*x0
-            x = F.gelu(self.fc1(x))
-            x = self.fc2(x)
-            return x#,x2,x3,x4
-
-    class Net0(nn.Module):
-        def __init__(self):
-            super(Net0, self).__init__()
-            self.m1 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=True)
+            # self.fc0=nn.Linear(2000, 500)
+            # #self.fc2=nn.Linear(1000,500)
 
 
+        # def forward(self, x):
+            # l2=224
+            # x1 = x[:,:,0:l2,0:l2]
+            # x2 = x[:,:,0:l2,l2:]
+            # x3 = x[:,:,l2:,0:l2]
+            # x4 = x[:,:,l2:,l2:]
+            # #torch.cuda.empty_cache()
+            # #gc.collect()
+            # x1 = F.gelu(self.m1(x1))
+            # x2 = F.gelu(self.m2(x2))
+            # x3 = F.gelu(self.m3(x3))
+            # x4 = F.gelu(self.m4(x4))
+            # x = torch.cat([x1,x2,x3,x4],dim=1)
+            # del x1,x2, x3, x4
+            # #x = F.gelu(self.fc1(x))
+            # x = self.fc0(x)
+            # return x#,x2,x3,x4
 
-        def forward(self, x):
-            x = self.m1(x)
+
+    # class Patch_model(nn.Module):
+        # def __init__(self):
+            # super(Patch_model, self).__init__()
+            # self.m0 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0.0,num_classes=2000,pretrained=True)
+            # self.m1 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m2 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m3 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+            # self.m4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=0.0,num_classes=500,pretrained=True)
+
+            # self.fc1=nn.Linear(4000, 1000)
+            # self.fc2=nn.Linear(1000,500)
 
 
-            return x#,x2,x3,x4
+        # def forward(self, x):
+            # l2=224
+            # x1 = x[:,:,0:l2,0:l2]
+            # x2 = x[:,:,0:l2,l2:]
+            # x3 = x[:,:,l2:,0:l2]
+            # x4 = x[:,:,l2:,l2:]
+            # #torch.cuda.empty_cache()
+            # #gc.collect()
+            # x = F.gelu(self.m0(x))
+            # x1 = F.gelu(self.m1(x1))
+            # x2 = F.gelu(self.m2(x2))
+            # x3 = F.gelu(self.m3(x3))
+            # x4 = F.gelu(self.m4(x4))
+            # x0 = torch.cat([x1,x2,x3,x4],dim=1)
+            # del x1,x2, x3, x4
+            # x = torch.cat([x,x0],dim=1)#x*x0
+            # x = F.gelu(self.fc1(x))
+            # x = self.fc2(x)
+            # return x#,x2,x3,x4
 
-    class Net2(nn.Module):
-        def __init__(self):
-            super(Net2, self).__init__()
-            self.m1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0,num_classes=1000,pretrained=True)
+    # class Net0(nn.Module):
+        # def __init__(self):
+            # super(Net0, self).__init__()
+            # self.m1 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=True)
 
 
 
-        def forward(self, x):
-            x = self.m1(x)
+        # def forward(self, x):
+            # x = self.m1(x)
 
 
-            return x#,x2,x3,x4
+            # return x#,x2,x3,x4
 
-    class Net3(nn.Module):
-        def __init__(self):
-            super(Net3, self).__init__()
-            self.m1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=True)
-
-
-
-        def forward(self, x):
-            x = self.m1(x)
+    # class Net2(nn.Module):
+        # def __init__(self):
+            # super(Net2, self).__init__()
+            # self.m1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0,num_classes=1000,pretrained=True)
 
 
-            return x#,x2,x3,x4
+
+        # def forward(self, x):
+            # x = self.m1(x)
+
+
+            # return x#,x2,x3,x4
+
+    # class Net3(nn.Module):
+        # def __init__(self):
+            # super(Net3, self).__init__()
+            # self.m1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=True)
+
+
+
+        # def forward(self, x):
+            # x = self.m1(x)
+
+
+            # return x#,x2,x3,x4
             
-    class Patch_model5(nn.Module):
-        def __init__(self):
-            super(Patch_model5, self).__init__()
-            self.m1 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
-            self.m2 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
-            self.m3 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
-            self.m4 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
-            self.fc0=nn.Linear(2000,500)
+    # class Patch_model5(nn.Module):
+        # def __init__(self):
+            # super(Patch_model5, self).__init__()
+            # self.m1 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
+            # self.m2 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
+            # self.m3 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
+            # self.m4 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=0.4,num_classes=500,pretrained=True)
+            # self.fc0=nn.Linear(2000,500)
 
-        def forward(self, x):
-            l2=224
-            x1 = x[:,:,0:l2,0:l2]
-            x2 = x[:,:,0:l2,l2:]
-            x3 = x[:,:,l2:,0:l2]
-            x4 = x[:,:,l2:,l2:]
+        # def forward(self, x):
+            # l2=224
+            # x1 = x[:,:,0:l2,0:l2]
+            # x2 = x[:,:,0:l2,l2:]
+            # x3 = x[:,:,l2:,0:l2]
+            # x4 = x[:,:,l2:,l2:]
 
-            x1 = F.relu(self.m1(x1))
-            x2 = F.relu(self.m2(x2))
-            x3 = F.relu(self.m3(x3))
-            x4 = F.relu(self.m4(x4))
+            # x1 = F.relu(self.m1(x1))
+            # x2 = F.relu(self.m2(x2))
+            # x3 = F.relu(self.m3(x3))
+            # x4 = F.relu(self.m4(x4))
 
-            x = torch.cat([x1,x2,x3,x4],dim=1)
-            x = self.fc0(x)
-            return x#,x2,x3,x4
+            # x = torch.cat([x1,x2,x3,x4],dim=1)
+            # x = self.fc0(x)
+            # return x#,x2,x3,x4
 
 
 
-    model6 = Patch_model3()
-    model6.load_state_dict(torch.load('models/speed_model_volod1_patch_4x224px_dispBrown_4_21'))
-    model6.to(device).eval()
+    # model6 = Patch_model3()
+    # model6.load_state_dict(torch.load('models/speed_model_volod1_patch_4x224px_dispBrown_4_21'))
+    # model6.to(device).eval()
 
-    model7 = Patch_model()
-    model7.load_state_dict(torch.load('models/speed_model_Volo224-448_dispBrown_patch_v3'))
-    model7.to(device).eval()
+    # model7 = Patch_model()
+    # model7.load_state_dict(torch.load('models/speed_model_Volo224-448_dispBrown_patch_v3'))
+    # model7.to(device).eval()
 
-    model8 =Patch_model2()
-    model8.load_state_dict(torch.load('models/speed_model_Volo224-448_dispBrown_patch_v1'))
-    model8.to(device).eval()
+    # model8 =Patch_model2()
+    # model8.load_state_dict(torch.load('models/speed_model_Volo224-448_dispBrown_patch_v1'))
+    # model8.to(device).eval()
 
-    model17 =Patch_model4()
-    model17.load_state_dict(torch.load('models/speed_model_patch448px_disp300_4_23_v2'))
-    model17.to(device).eval()
+    # model17 =Patch_model4()
+    # model17.load_state_dict(torch.load('models/speed_model_patch448px_disp300_4_23_v2'))
+    # model17.to(device).eval()
 
-    model5 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
-    model5.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22_v2'))
-    model5.to(device).eval()
+    # model5 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
+    # model5.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22_v2'))
+    # model5.to(device).eval()
 
-    model1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
-    model1.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22'))
-    model1.to(device).eval()
+    # model1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
+    # model1.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22'))
+    # model1.to(device).eval()
 
-    model2 = timm.create_model('twins_svt_small', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model2.load_state_dict(torch.load('models/speed_model_TwinsSvtSmall_500px_opposite_dispBrown_4_21'))
-    model2.to(device).eval()
+    # model2 = timm.create_model('twins_svt_small', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model2.load_state_dict(torch.load('models/speed_model_TwinsSvtSmall_500px_opposite_dispBrown_4_21'))
+    # model2.to(device).eval()
 
-    model3 = timm.create_model('volo_d2_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model3.load_state_dict(torch.load('models/speed_model_volod1_224px_disp_4_21'))
-    model3.to(device).eval()
+    # model3 = timm.create_model('volo_d2_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model3.load_state_dict(torch.load('models/speed_model_volod1_224px_disp_4_21'))
+    # model3.to(device).eval()
 
-    model4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model4.load_state_dict(torch.load('models/speed_model_volod1_224px_dispBrown_4_21'))
-    model4.to(device).eval()
+    # model4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model4.load_state_dict(torch.load('models/speed_model_volod1_224px_dispBrown_4_21'))
+    # model4.to(device).eval()
 
-    model18 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model18.load_state_dict(torch.load('models/speed_model_384px_disp300_4_23'))
-    model18.to(device).eval()
+    # model18 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model18.load_state_dict(torch.load('models/speed_model_384px_disp300_4_23'))
+    # model18.to(device).eval()
 
-    model19 = timm.create_model('volo_d2_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model19.load_state_dict(torch.load('models/speed_model_384px_disp300_4_23_v2'))
-    model19.to(device).eval()
+    # model19 = timm.create_model('volo_d2_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model19.load_state_dict(torch.load('models/speed_model_384px_disp300_4_23_v2'))
+    # model19.to(device).eval()
 
-    model20 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model20.load_state_dict(torch.load('models/speed_model_volod3_448px_disp300_4_25'))
-    model20.to(device).eval()
+    # model20 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model20.load_state_dict(torch.load('models/speed_model_volod3_448px_disp300_4_25'))
+    # model20.to(device).eval()
 
-    model9 = Net0()
-    model9.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full'))
-    model9.to(device).eval()
+    # model9 = Net0()
+    # model9.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full'))
+    # model9.to(device).eval()
 
-    #model10 = Net0()
-    #model10.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_fullv2'))
-    #model10.to(device).eval()
+    # #model10 = Net0()
+    # #model10.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_fullv2'))
+    # #model10.to(device).eval()
 
-    model11 = Net0()
-    model11.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_fullv3'))
-    model11.to(device).eval()
+    # model11 = Net0()
+    # model11.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_fullv3'))
+    # model11.to(device).eval()
 
-    model12 = Net0()
-    model12.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full_new_v1'))
-    model12.to(device).eval()
+    # model12 = Net0()
+    # model12.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full_new_v1'))
+    # model12.to(device).eval()
 
-    model13 = Net2()
-    model13.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown'))
-    model13.to(device).eval()
+    # model13 = Net2()
+    # model13.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown'))
+    # model13.to(device).eval()
 
-    model14 = Net3()
-    model14.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown_full'))
-    model14.to(device).eval()
+    # model14 = Net3()
+    # model14.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown_full'))
+    # model14.to(device).eval()
 
-    model15 = timm.create_model('swinv2_small_window16_256', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model15.load_state_dict(torch.load('models/speed_model_patch_swin_256px_dispBrown_4_23'))
-    model15.to(device).eval()
+    # model15 = timm.create_model('swinv2_small_window16_256', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model15.load_state_dict(torch.load('models/speed_model_patch_swin_256px_dispBrown_4_23'))
+    # model15.to(device).eval()
 
-    # #model16 = timm.create_model('botnet26t_256', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    # #model16.load_state_dict(torch.load('models/speed_model_ByobNet26_256px_dispBrown_4_23'))
-    # #model16.to(device).eval()
+    # # #model16 = timm.create_model('botnet26t_256', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # # #model16.load_state_dict(torch.load('models/speed_model_ByobNet26_256px_dispBrown_4_23'))
+    # # #model16.to(device).eval()
 
-    model21 = timm.create_model('volo_d1_384', in_chans=35, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model21.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_max216_7189'))
-    model21.to(device).eval()
+    # model21 = timm.create_model('volo_d1_384', in_chans=35, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model21.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_max216_7189'))
+    # model21.to(device).eval()
 
-    model22 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model22.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_v3'))
-    model22.to(device).eval()
+    # model22 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model22.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_v3'))
+    # model22.to(device).eval()
 
-    model23 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model23.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_all_5_04_v4'))
-    model23.to(device).eval()
+    # model23 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model23.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_all_5_04_v4'))
+    # model23.to(device).eval()
 
-    model24 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model24.load_state_dict(torch.load('models/speed_model_volod2_384px_disp_lbm_5_04_max122_8786_v2'))
-    model24.to(device).eval()
+    # model24 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model24.load_state_dict(torch.load('models/speed_model_volod2_384px_disp_lbm_5_04_max122_8786_v2'))
+    # model24.to(device).eval()
     
-    model25 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model25.load_state_dict(torch.load('models/speed_model_volod3_448px_disp_lbm_5_07'))
-    model25.to(device).eval()
+    # model25 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model25.load_state_dict(torch.load('models/speed_model_volod3_448px_disp_lbm_5_07'))
+    # model25.to(device).eval()
 
-    model26 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model26.load_state_dict(torch.load('models/speed_model_volod3_448px_disp_lbm_5_07_v2'))
-    model26.to(device).eval()
+    # model26 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model26.load_state_dict(torch.load('models/speed_model_volod3_448px_disp_lbm_5_07_v2'))
+    # model26.to(device).eval()
     
-    model27 = Patch_model5()
-    model27.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07_v4'))
-    model27.to(device).eval()
+    # model27 = Patch_model5()
+    # model27.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07_v4'))
+    # model27.to(device).eval()
     
-    # model28 = Patch_model5()
-    # model28.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07_v3'))
-    # model28.to(device).eval()
+    # # model28 = Patch_model5()
+    # # model28.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07_v3'))
+    # # model28.to(device).eval()
     
-    # model29 = Patch_model5()
-    # model29.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07_v2'))
-    # model29.to(device).eval()
+    # # model29 = Patch_model5()
+    # # model29.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07_v2'))
+    # # model29.to(device).eval()
     
-    # model30 = Patch_model5()
-    # model30.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07'))
-    # model30.to(device).eval()
+    # # model30 = Patch_model5()
+    # # model30.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07'))
+    # # model30.to(device).eval()
     
 
-    outputs=[]
-    outputs2=[]
-    torch.cuda.empty_cache()
-    gc.collect()
+    # outputs=[]
+    # outputs2=[]
+    # torch.cuda.empty_cache()
+    # gc.collect()
 
         
 
-    max24 = 140.0
-    max21 = 216.7189
+    # max24 = 140.0
+    # max21 = 216.7189
 
-    with torch.no_grad():
-        for x in test_dataloader:
-            if torch.mean(x)<.5:
-                x = 1-x
-            # x1 = tv.transforms.functional.resize(x, 448)
-            x2 = tv.transforms.functional.resize(x, 224)
-            x3 = tv.transforms.functional.resize(x, 384)
-            x4 = tv.transforms.functional.resize(x, 256)
-            #out1_1000 = (model1((1-x1).to(device)).detach().cpu().numpy())
-            #out1 = np.zeros([batch_size,500])
-            #for i in range(len(out1)):
-            #    out1[i,:] = interpolate_vectors(out1_1000[i,:],500)
-            out2 = np.sort(model2((x).to(device)).detach().cpu().numpy())
-            out11 = np.sort(model11((x3).to(device)).detach().cpu().numpy())
-            #out10 =(model10((x3).to(device)).detach().cpu().numpy())
-            out9 = np.sort(model9((x3).to(device)).detach().cpu().numpy())
-            out8 = np.sort(model8((x).to(device)).detach().cpu().numpy())
-            out7 =np.sort(model7((x).to(device)).detach().cpu().numpy())
-            out6 = np.sort(model6((1-x).to(device)).detach().cpu().numpy())
-            #out3 = np.sort(model3((1-x2).to(device)).detach().cpu().numpy())
-            out4 = np.sort(model4((x2).to(device)).detach().cpu().numpy())
-            #out5 = np.sort(model5((x1).to(device)).detach().cpu().numpy())
-            #out12 = np.sort(model12((x3).to(device)).detach().cpu().numpy())
-            #out0 = (model((1-x1).to(device)).detach().cpu().numpy())
-            out13_1000 = np.sort(model13((x).to(device)).detach().cpu().numpy())
-            out13 = np.zeros([batch_size,500])
-            for i in range(len(out13)-1):
-                 out13[i,:] = interpolate_vectors(out13_1000[i,:],500)
-            out14 = np.sort(model14((x).to(device)).detach().cpu().numpy())
-            out15 = np.sort(model15((1-x4).to(device)).detach().cpu().numpy())
+    # with torch.no_grad():
+        # for x in test_dataloader:
+            # if torch.mean(x)<.5:
+                # x = 1-x
+            # # x1 = tv.transforms.functional.resize(x, 448)
+            # x2 = tv.transforms.functional.resize(x, 224)
+            # x3 = tv.transforms.functional.resize(x, 384)
+            # x4 = tv.transforms.functional.resize(x, 256)
+            # #out1_1000 = (model1((1-x1).to(device)).detach().cpu().numpy())
+            # #out1 = np.zeros([batch_size,500])
+            # #for i in range(len(out1)):
+            # #    out1[i,:] = interpolate_vectors(out1_1000[i,:],500)
+            # out2 = np.sort(model2((x).to(device)).detach().cpu().numpy())
+            # out11 = np.sort(model11((x3).to(device)).detach().cpu().numpy())
+            # #out10 =(model10((x3).to(device)).detach().cpu().numpy())
+            # out9 = np.sort(model9((x3).to(device)).detach().cpu().numpy())
+            # out8 = np.sort(model8((x).to(device)).detach().cpu().numpy())
+            # out7 =np.sort(model7((x).to(device)).detach().cpu().numpy())
+            # out6 = np.sort(model6((1-x).to(device)).detach().cpu().numpy())
+            # #out3 = np.sort(model3((1-x2).to(device)).detach().cpu().numpy())
+            # out4 = np.sort(model4((x2).to(device)).detach().cpu().numpy())
+            # #out5 = np.sort(model5((x1).to(device)).detach().cpu().numpy())
+            # #out12 = np.sort(model12((x3).to(device)).detach().cpu().numpy())
+            # #out0 = (model((1-x1).to(device)).detach().cpu().numpy())
+            # out13_1000 = np.sort(model13((x).to(device)).detach().cpu().numpy())
+            # out13 = np.zeros([batch_size,500])
+            # for i in range(len(out13)-1):
+                 # out13[i,:] = interpolate_vectors(out13_1000[i,:],500)
+            # out14 = np.sort(model14((x).to(device)).detach().cpu().numpy())
+            # out15 = np.sort(model15((1-x4).to(device)).detach().cpu().numpy())
+            # # #out16 = (model16((1-x4).to(device)).detach().cpu().numpy())
+            # out17 = np.sort(model17((1-x).to(device)).detach().cpu().numpy())
+            # out18 = np.sort(model18((x3).to(device)).detach().cpu().numpy())
+            # out19 = np.sort(model19((1-x3).to(device)).detach().cpu().numpy())
+            # out20 = np.sort(model20((1-x).to(device)).detach().cpu().numpy())
+            # #out21 = np.sort(model21((x3[:,5:,:,:]).to(device)).detach().cpu().numpy())*max21
+            # #out22 = np.sort(model22((1-x3[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            
+            # #out23 = np.sort(model23((1-x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # out25 = np.sort(model25((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # out26 = np.sort(model26((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # out26_2 = np.sort(model26((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # out27 = np.sort(model27((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # #out28 = np.sort(model28((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # # out29 = np.sort(model29((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # #out30 = np.sort(model30((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+
+            # out24 = np.sort(model24((1-x3).to(device)).detach().cpu().numpy())*max24
+            
+
+            # out14_2 = np.sort(model14((1-x).to(device)).detach().cpu().numpy())
+            # #out15_2 = np.sort(model15((x4).to(device)).detach().cpu().numpy())
             # #out16 = (model16((1-x4).to(device)).detach().cpu().numpy())
-            out17 = np.sort(model17((1-x).to(device)).detach().cpu().numpy())
-            out18 = np.sort(model18((x3).to(device)).detach().cpu().numpy())
-            out19 = np.sort(model19((1-x3).to(device)).detach().cpu().numpy())
-            out20 = np.sort(model20((1-x).to(device)).detach().cpu().numpy())
-            #out21 = np.sort(model21((x3[:,5:,:,:]).to(device)).detach().cpu().numpy())*max21
-            #out22 = np.sort(model22((1-x3[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # out17_2 = np.sort(model17((x).to(device)).detach().cpu().numpy())
+            # #out18_2 = np.sort(model18((1-x3).to(device)).detach().cpu().numpy())
+            # out19_2 = np.sort(model19((x3).to(device)).detach().cpu().numpy())
+            # #out20_2 = np.sort(model20((x).to(device)).detach().cpu().numpy())
+
+            # out = (out6*8+out7*2+out15*4+out20+out25*4+out27)/19
+            # if class_num==4:
+                # #1ulh
+                # #class 3 (x<3)
+                # out=(out*160+out4*6+(out14)*15+out14_2*60+out17*50+out18*15+(out17_2)*20+(out19_2)*25+(out20)*10+(out8)*1.5+(out9)*.5+out26_2*2+out24)/365
+                # out = out*.75
+            # elif class_num==3:
+                # #class 2 (3<x<6)
+                # out=(out*400+out2*10+out6*4+out11*5+out14*4+out15*2+out17*10+out18*8+out19*26+out20*2+out24*9)/480
+                # out = out*.95
+            # elif class_num==2:
+                # #5ulh
+                # #class 1 (6<x<10)
+                # out = (out*200+out9*90+out11*60+out27*10+out24*40+out26*80+out19*10+out18*10+out13*20)/520
+                # #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
+                # out = out*1.65
+            # elif class_num==1:
+                # #5ulh
+                # #class 1 (6<x<10)
+                # out = (out*200+out9*120+out11*90+out27*10+out24*60+out26*120+out19*10+out18*10+out13*20)/640
+                # #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
+                # out = out*1.8
+            # else:
+                # #class 0 (x>10)
+                # out = (out*200+out9*120+out11*110+out27*10+out24*80+out26*160+out19*10+out18*10+out13*20)/720
+                # out = out*2
+            # # outputs.append(out)
             
-            #out23 = np.sort(model23((1-x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out25 = np.sort(model25((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out26 = np.sort(model26((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out26_2 = np.sort(model26((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out27 = np.sort(model27((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            #out28 = np.sort(model28((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            # out29 = np.sort(model29((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            #out30 = np.sort(model30((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-
-            out24 = np.sort(model24((1-x3).to(device)).detach().cpu().numpy())*max24
             
-
-            out14_2 = np.sort(model14((1-x).to(device)).detach().cpu().numpy())
-            #out15_2 = np.sort(model15((x4).to(device)).detach().cpu().numpy())
-            #out16 = (model16((1-x4).to(device)).detach().cpu().numpy())
-            out17_2 = np.sort(model17((x).to(device)).detach().cpu().numpy())
-            #out18_2 = np.sort(model18((1-x3).to(device)).detach().cpu().numpy())
-            out19_2 = np.sort(model19((x3).to(device)).detach().cpu().numpy())
-            #out20_2 = np.sort(model20((x).to(device)).detach().cpu().numpy())
-
-            out = (out6*8+out7*2+out15*4+out20+out25*4+out27)/19
-            if class_num==4:
-                #1ulh
-                #class 3 (x<3)
-                out=(out*160+out4*6+(out14)*15+out14_2*60+out17*50+out18*15+(out17_2)*20+(out19_2)*25+(out20)*10+(out8)*1.5+(out9)*.5+out26_2*2+out24)/365
-                out = out*.75
-            elif class_num==3:
-                #class 2 (3<x<6)
-                out=(out*400+out2*10+out6*4+out11*5+out14*4+out15*2+out17*10+out18*8+out19*26+out20*2+out24*9)/480
-                out = out*.95
-            elif class_num==2:
-                #5ulh
-                #class 1 (6<x<10)
-                out = (out*200+out9*90+out11*60+out27*10+out24*40+out26*80+out19*10+out18*10+out13*20)/520
-                #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
-                out = out*1.65
-            elif class_num==1:
-                #5ulh
-                #class 1 (6<x<10)
-                out = (out*200+out9*120+out11*90+out27*10+out24*60+out26*120+out19*10+out18*10+out13*20)/640
-                #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
-                out = out*1.8
-            else:
-                #class 0 (x>10)
-                out = (out*200+out9*120+out11*110+out27*10+out24*80+out26*160+out19*10+out18*10+out13*20)/720
-                out = out*2
+            # #out = (out6*8+out7*2+out15*4+out25*4)/18
             # outputs.append(out)
-            
-            
-            #out = (out6*8+out7*2+out15*4+out25*4)/18
-            outputs.append(out)
 
 
-    stacked_out = np.vstack(outputs)
-    out = np.reshape(stacked_out,[stacked_out.shape[0]*stacked_out.shape[1], ])
+    # stacked_out = np.vstack(outputs)
+    # out = np.reshape(stacked_out,[stacked_out.shape[0]*stacked_out.shape[1], ])
 
-    directory='../tmate_trajectories/'
+    # directory='../tmate_trajectories/'
     filename = os.listdir(directory)[f_idx]
     print(filename)
     df = pd.read_csv(os.path.join(directory,filename),header=0, skiprows=[1,2,3])
     tracks = df.TRACK_ID.unique()
-    vels=1
-    for i in range(len(tracks)):
-        idx = tracks[i]
-        if df[df.TRACK_ID==idx].sort_values(by='FRAME').FRAME.iloc[-1] < (images.shape[0]*images.shape[1]):
-            posx = df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_X
-            posy = df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_Y
+    # vels=1
+    # for i in range(len(tracks)):
+        # idx = tracks[i]
+        # if df[df.TRACK_ID==idx].sort_values(by='FRAME').FRAME.iloc[-1] < (images.shape[0]*images.shape[1]):
+            # posx = df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_X
+            # posy = df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_Y
 
-            vel = (np.sqrt(posx.diff()**2+posy.diff()**2)).dropna()
+            # vel = (np.sqrt(posx.diff()**2+posy.diff()**2)).dropna()
         
-            vels = np.hstack([vels, vel])
+            # vels = np.hstack([vels, vel])
             
-    vels=vels[~np.isnan(vels)]
-    vels = vels[vels<200]
-    vels = vels[vels>0]
-    out = out[out<200]
-    out = out[out>0]
+    # vels=vels[~np.isnan(vels)]
+    # vels = vels[vels<200]
+    # vels = vels[vels>0]
+    # out = out[out<200]
+    # out = out[out>0]
 
     criterion = nn.MSELoss()
-    #speed_loss = criterion(torch.tensor(np.sort(interpolate_vectors(np.sort(out[out>0]), len(vels)))), torch.tensor(np.sort(vels)))
-    mean_loss =  np.abs(np.mean(vels)-np.mean(out))
-    print('Mean Speed from PT: ', np.mean(vels))
+    # #speed_loss = criterion(torch.tensor(np.sort(interpolate_vectors(np.sort(out[out>0]), len(vels)))), torch.tensor(np.sort(vels)))
+    # mean_loss =  np.abs(np.mean(vels)-np.mean(out))
+    # print('Mean Speed from PT: ', np.mean(vels))
     
-    print('Absolute Error of Average Speed: ',mean_loss)
-    q=np.sort(interpolate_vectors(np.sort(out), len(vels)))
-    w=np.sort(vels)
-    speed_loss = criterion(torch.tensor(q), torch.tensor(w))
-    print('Speed Loss: ', speed_loss)
+    # print('Absolute Error of Average Speed: ',mean_loss)
+    # q=np.sort(interpolate_vectors(np.sort(out), len(vels)))
+    # w=np.sort(vels)
+    # speed_loss = criterion(torch.tensor(q), torch.tensor(w))
+    # print('Speed Loss: ', speed_loss)
+    # file_error.append(mean_loss)
+    # file_mse.append(speed_loss)
 
     
-    final_out.append(q)
-    final_true.append(w)
+    # final_out.append(q)
+    # final_true.append(w)
     
-    plt.figure(figsize=(8, 6))
-    a,b,c,d = betaprime.fit(q)
+    # plt.figure(figsize=(8, 6))
+    # a,b,c,d = betaprime.fit(q)
 
-    xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
-                    betaprime.ppf(0.9999, a,b,c,d), target_length)
+    # xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
+                    # betaprime.ppf(0.9999, a,b,c,d), target_length)
 
-    distr_torch1=betaprime.pdf(xtorch, a,b,c,d)
-    plt.plot(xtorch,distr_torch1,c='r')
+    # distr_torch1=betaprime.pdf(xtorch, a,b,c,d)
+    # plt.plot(xtorch,distr_torch1,c='r')
 
 
-    a,b,c,d = betaprime.fit(w)
+    # a,b,c,d = betaprime.fit(w)
         
-    xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
-                    betaprime.ppf(0.9999, a,b,c,d), target_length)
+    # xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
+                    # betaprime.ppf(0.9999, a,b,c,d), target_length)
 
-    distr_torch=betaprime.pdf(xtorch, a,b,c,d)
+    # distr_torch=betaprime.pdf(xtorch, a,b,c,d)
 
-    plt.plot(xtorch,distr_torch,c='g')
-    plt.ylabel('Probability Density')
-    plt.xlabel('Speed (pixels/frame)')
-    plt.title('Speed Vectors for '+str(base), fontsize=6)
-    plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
-    plt.grid(True)
-    plt.tight_layout()
-    plt.savefig('Speed_'+str(f_idx)+'.png')
-    w1 = wasserstein_distance(distr_torch, distr_torch1)
-    print ('Earth Movers Distance: ', w1)
+    # plt.plot(xtorch,distr_torch,c='g')
+    # plt.ylabel('Probability Density')
+    # plt.xlabel('Speed (pixels/frame)')
+    # plt.title('Speed Vectors for '+str(base), fontsize=12)
+    # plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
+    # plt.grid(True)
+    # plt.tight_layout()
+    # plt.savefig('Speed_'+str(f_idx)+'.png')
+    # w1 = wasserstein_distance(distr_torch, distr_torch1)
+    # print ('Earth Movers Distance: ', w1)
     
-    speed_w1.append(w1)
+    # speed_w1.append(w1)
     
 
     
@@ -1186,20 +1192,20 @@ for f_idx in range(0,len(directories)):
             x2 = tv.transforms.functional.resize(x, 384)
 
             out0 =np.sort(model0((x).to(device)).detach().cpu().numpy())
-            out1 =np.sort(model1((x2).to(device)).detach().cpu().numpy())*.65
-            out2 =np.sort(model2((x2).to(device)).detach().cpu().numpy())*.55
+            out1 =np.sort(model1((x2).to(device)).detach().cpu().numpy())*.55
+            out2 =np.sort(model2((x2).to(device)).detach().cpu().numpy())*.5
             out3 =np.sort(model3((x2).to(device)).detach().cpu().numpy())*.45
             out4 =np.sort(model4((x2).to(device)).detach().cpu().numpy())*.4
 
 
             if class_num_ang==4:
-                out=(out2*3+out1)/3
+                out=(out2*4+out1*3+out0*2)/8
             elif class_num_ang==3:
-                out=(out0*2+out5+out2+out1+out3+out4)/6.5
+                out=(out0*10+out2*2+out1*4+out3*4+out4*5)/25
             elif class_num_ang==2:
                 out=(out0+out1+out4+out3*3)/6
             elif class_num_ang==1:
-                out=(out0*4+out4*1)/5
+                out=(out0*3+out4*1+out3*4)/8
             else:
                 out=(out0*4+out4*1)/5
 
@@ -1220,13 +1226,13 @@ for f_idx in range(0,len(directories)):
             out10 =np.sort(model8((x2).to(device)).detach().cpu().numpy())*1.25
 
             if class_num_ang==4:
-                out=(out5*1+out6*5+out7*10+out8*2+out10)/17
+                out=(out5*1+out6*5+out7*10+out8*2+out10*8)/26
             elif class_num_ang==3:
-                out=(out1*4+out5*4+out6*2+out7*1+out8*1+out9*5)/16
+                out=(out5*6+out6*3+out7*2+out8*2+out9*4+out10*2)/19
             elif class_num_ang==2:
-                out=(out1+out9*1.5+out3+out4)/4.5
+                out=(out9*3+out5*5+out8+out10*1)/10
             elif class_num_ang==1:
-                out=(out0+out1+1*out9*2+out5)/4
+                out=(out9*2+out5*2)/4
             #out=out0
             # elif class_num==2:
             #     out=out1
@@ -1234,17 +1240,17 @@ for f_idx in range(0,len(directories)):
 
             outputs2_ang.append(out)
     
-    print('0: ',np.mean(out0))
-    print('1: ',np.mean(out1))
-    print('2: ',np.mean(out2))
-    print('3: ',np.mean(out3))
-    print('4: ',np.mean(out4))
-    print('5: ',np.mean(out5))
-    print('6: ',np.mean(out6))
-    print('7: ',np.mean(out7))
-    print('8: ',np.mean(out8))
-    print('9: ',np.mean(out9))
-    print('10: ',np.mean(out10))
+    print('0: ',np.mean(out0), np.min(out0), np.max(out0))
+    print('1: ',np.mean(out1), np.min(out1), np.max(out1))
+    print('2: ',np.mean(out2), np.min(out2), np.max(out2))
+    print('3: ',np.mean(out3), np.min(out3), np.max(out3))
+    print('4: ',np.mean(out4), np.min(out4), np.max(out4))
+    print('5: ',np.mean(out5), np.min(out5), np.max(out5))
+    print('6: ',np.mean(out6), np.min(out6), np.max(out6))
+    print('7: ',np.mean(out7), np.min(out7), np.max(out7))
+    print('8: ',np.mean(out8), np.min(out8), np.max(out8))
+    print('9: ',np.mean(out9), np.min(out9), np.max(out9))
+    print('10: ',np.mean(out10), np.min(out10), np.max(out10))
 
     #print('next batch')  
     newout1 = np.vstack(outputs_ang)
@@ -1261,18 +1267,20 @@ for f_idx in range(0,len(directories)):
 
 
     if class_num_ang==4:
-        out = 1.4*(out0*3+out7*2+out1*3+out2*1+out10*2)/11
+        out = 1.35*(out1*1+out2*1)/2
     elif class_num_ang==3:
-        out = (out1*1+out2*4)/5
+        out = 1.2*(out1*5+out2*1)/6
     elif class_num_ang==2:
-        out=out1*.95
+        out=1.05*(out1*7+out2*1)/8
     elif class_num_ang==1:
-        out=(out0*2+out2*2)/4
+        out=(out1*9+out2*1)/10
     out.shape
     out = out[out>0]
     out = out[out<360]
     
     mean_loss =  np.abs(np.mean(angles)-np.mean(out))
+    print('Min, Max: ', np.min(angles), np.max(angles))
+    print('Min out, Max out: ', np.min(out), np.max(out))
     print('Mean Turn Angle from PT: ', np.mean(angles))
     print('Mean Turn Angle from DeepTrackStat: ', np.mean(out))
     
@@ -1296,7 +1304,7 @@ for f_idx in range(0,len(directories)):
     plt.plot(xtorch,distr_torch,c='g')
     plt.ylabel('Probability Density')
     plt.xlabel('Turn Angle (degrees)')
-    plt.title('Turn Angle Vectors for '+str(base), fontsize=6)
+    plt.title('Turn Angle Vectors for '+str(base), fontsize=12)
     plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
     plt.grid(True)
     plt.tight_layout()
@@ -1304,13 +1312,16 @@ for f_idx in range(0,len(directories)):
     w1 = wasserstein_distance(distr_torch, distr_torch1)
     print ('Earth Movers Distance: ', w1)
     ang_w1.append(w1)
-    final_out_ang.append(np.sort(out1))
-    final_true_ang.append(b)
+    final_out_ang.append(q)
+    final_true_ang.append(w)
     
     
     ###################
     ######   Vx  ######
     ###################
+    
+    print('Starting Vx')
+
     
     from torch import nn
     import torch.nn.functional as F
@@ -1537,43 +1548,46 @@ for f_idx in range(0,len(directories)):
 
     with torch.no_grad():
         for x in test_dataloader:
-            x1 = tv.transforms.functional.resize(x, 448)
-            out0 = np.sort(model0((x1).to(device)).detach().cpu().numpy())*slope1+int1
+            x1 = torchvision.transforms.functional.resize(x, 448)
+            out0 = np.sort(model0((x).to(device)).detach().cpu().numpy())*slope1+int1
            # x=1-x
-            x2 = tv.transforms.functional.resize(x, 384)
+            x2 = torchvision.transforms.functional.resize(x, 384)
             
             out1 = np.sort(model1((x2).to(device)).detach().cpu().numpy())
             out2 = np.sort(model2((1-x2).to(device)).detach().cpu().numpy())*slope200+int200
             out4 = np.sort(model4((x2).to(device)).detach().cpu().numpy())*slope_all+int_all
             out5 = np.sort(model5((x).to(device)).detach().cpu().numpy())*slope_all2+int_all2
-            out6 = np.sort(model6((x).to(device)).detach().cpu().numpy())
+            out6 = np.sort(model6((x).to(device)).detach().cpu().numpy())*50
             out7= np.sort(model7((x2).to(device)).detach().cpu().numpy())*slope_all2+int_all2
             out8 = out7[:,:,0]*1.5-10
-            out9 = out7[:,:,0]*1.3-16
+            out9 = out7[:,:,0]*1.3-17
             out7 = out7[:,:,0]
+            out11 = (out0-1.0)*4
 
             
             ##class1
             if class_num==2:
-                out=(out0*10+out1+out4*4+out5+out2*3+out7+out8*2)/22
+                out=(out11*10+out0*12+out1+out4*4+out5+out2*3+out7+out8*2)/34
 
             elif class_num==3:
-                out=(out0*5+out1*8+out2*10+out4*6+out8*3+out9*5)/37
+                out=(out11*4+out0*7+out1*8+out2*10+out4*6+out8*3+out9*5)/43
 
             elif class_num==4:
-                out=(out0*10+out1*18+out9*3)/34
+                out=(out0*12+out1*18+out9*10)/47
 
             outputs.append(out)
             #outputs2.append(out2)
             
-    # print('1: ',np.mean(out1))
-    # print('2: ',np.mean(out2))
-    # print('4: ',np.mean(out4))
-    # print('5: ',np.mean(out5))
-    # print('6: ',np.mean(out6))
-    # print('7: ',np.mean(out7))
-    # print('8: ',np.mean(out8))
-    # print('9: ',np.mean(out9))
+    print('0: ',np.mean(out0), np.min(out0), np.max(out0))
+    print('1: ',np.mean(out1), np.min(out1), np.max(out1))
+    print('2: ',np.mean(out2), np.min(out2), np.max(out2))
+    print('4: ',np.mean(out4), np.min(out4), np.max(out4))
+    print('5: ',np.mean(out5), np.min(out5), np.max(out5))
+    print('6: ',np.mean(out6), np.min(out6), np.max(out6))
+    print('7: ',np.mean(out7), np.min(out7), np.max(out7))
+    print('8: ',np.mean(out8), np.min(out8), np.max(out8))
+    print('9: ',np.mean(out9), np.min(out9), np.max(out9))
+    print('11: ',np.mean(out11), np.min(out11), np.max(out11))
 
     newout = np.vstack(outputs)
     outputs = np.mean(newout,0)
@@ -1586,20 +1600,22 @@ for f_idx in range(0,len(directories)):
     outputs2=[]
     with torch.no_grad():
         for x in test_dataloader2:
-            out8 = np.sort(model8((x).to(device)).detach().cpu().numpy())*slope2+int2
+            out10 = np.sort(model8((x).to(device)).detach().cpu().numpy())*slope2+int2
 
             outputs2.append(out8)
     newout = np.vstack(outputs2)
     outputs2 = np.mean(newout,0)
+    
+    print('10: ',np.mean(out10), np.min(out10), np.max(out10))
         
     if class_num==4:
-        out3 = (outputs)
+        out3 = (outputs*16+outputs2)/17
     elif class_num==3:
         out3 = (outputs*16+ outputs2)/17
     elif class_num==2:
-        out3 = (outputs*16+ outputs2)/17
+        out3 = (outputs*15+ outputs2)/16
     elif class_num==1:
-        out3 = (outputs*16+ outputs2)/17
+        out3 = (outputs*14+ outputs2)/17
 
     vels=1
     for i in range(len(tracks)):
@@ -1614,6 +1630,8 @@ for f_idx in range(0,len(directories)):
     vels = vels[vels!=0]
     out3 = out3[out3!=0]
     mean_loss =  np.abs(np.mean(vels)-np.mean(out3))
+    print('Min, Max: ', np.min(vels), np.max(vels))
+    print('Min out, Max out: ', np.min(out3), np.max(out3))
     print('Mean Vx from PT: ', np.mean(vels))
     
     print('Absolute Error of Average Vx: ',mean_loss)
@@ -1645,7 +1663,7 @@ for f_idx in range(0,len(directories)):
     plt.plot(xtorch,distr_torch,c='g')
     plt.ylabel('Probability Density')
     plt.xlabel('Speed (pixels/frame)')
-    plt.title('Vx Distribution for '+str(base), fontsize=6)
+    plt.title('Vx Distribution for '+str(base), fontsize=12)
     plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
     plt.grid(True)
     plt.tight_layout()
@@ -1661,6 +1679,8 @@ for f_idx in range(0,len(directories)):
     ##################
     ######  Vy  ######
     ##################
+    
+    print('Starting Vy')
 
     model0 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
     model0.load_state_dict(torch.load('models/vy_model_volod1_384px_disp_all_max69_2162_min-66_9786_v3'))
@@ -1699,6 +1719,16 @@ for f_idx in range(0,len(directories)):
     # print (int200, int300, int500, int_all)
     # tensor(182.7808) tensor(182.7808) tensor(184.0055) tensor(216.6908)
     # tensor(-16.0141) tensor(-16.0141) tensor(-17.2388) tensor(-49.9241)
+    outputs=[]
+    outputs2=[]
+    torch.cuda.empty_cache()
+    gc.collect()
+
+
+    # print (slope200, slope300, slope500, slope_all)
+    # print (int200, int300, int500, int_all)
+    # tensor(182.7808) tensor(182.7808) tensor(184.0055) tensor(216.6908)
+    # tensor(-16.0141) tensor(-16.0141) tensor(-17.2388) tensor(-49.9241)
     max1 = 69.2162
     min1 = -66.9786
     slope1 = max1-min1
@@ -1718,30 +1748,29 @@ for f_idx in range(0,len(directories)):
             out1 = np.sort(model1((x2).to(device)).detach().cpu().numpy())*slope1+int1
             out2 = np.sort(model2((x2).to(device)).detach().cpu().numpy())*slope1+int1
             out3 = np.sort(model3((x3).to(device)).detach().cpu().numpy())*slope1+int1
-            out4 = np.sort(model4((x1).to(device)).detach().cpu().numpy())*slope2+int2
-            out4_1 = out4*1.75+2.5
-            out4_2 = out4*1.55-3.5
-            out4_3 = out4*.75
+            out4 = np.sort(model4((x).to(device)).detach().cpu().numpy())*slope2+int2
+            out4_1 = out4*1.75+3
+            out4_2 = out4*1.55-3
+            out4_3 = out4*.7
             out5 = np.sort(model5((x2).to(device)).detach().cpu().numpy())*slope2+int2
             out5_2 = np.sort(model5((x2).to(device)).detach().cpu().numpy())*slope1+int1
 
             
             ##class1
             if class_num==2:
-                out=(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*22)/58
+                out=1.08*(out0+out1+out2*3+out3*2+out4*30+out5+out5_2*5+out4_2*26+out4_1*16+out4_3*1)/84
 
-            elif class_num==3:
-                out=(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*24+out4_1*6)/64
+            if class_num==3:
+                out=1.02*(out0+out1+out2+out3*6+out4*30+out5+out5_2*3+out4_2*18+out4_1*16+out4_3*12)/90
 
-            elif class_num==4:
-                out=(out4*25+out4_2*1+out4_3*6)/32
+            if class_num==4:
+                out=.98*(out4*25+out4_2*12+out4_3*36+out4_1*10+out0+out1+out2+out3*10)/102
 
                     ##class3
             #out=(out0*18+out1*4+out4*1+out2*2)/31
 
             outputs.append(out)
             #outputs2.append(out2)
-            
     max2 =132.73
     min2 = -95.1744
     slope2 = max2-min2
@@ -1754,13 +1783,23 @@ for f_idx in range(0,len(directories)):
 
 
             outputs2.append(out6)
-            
+    print('0: ',np.mean(out0), np.min(out0), np.max(out0))
+    print('1: ',np.mean(out1), np.min(out1), np.max(out1))
+    print('2: ',np.mean(out2), np.min(out2), np.max(out2))
+    print('4: ',np.mean(out4), np.min(out4), np.max(out4))
+    print('5: ',np.mean(out5), np.min(out5), np.max(out5))
+    print('5_2: ',np.mean(out5_2), np.min(out5_2), np.max(out5_2))
+    print('6: ',np.mean(out6), np.min(out6), np.max(out6))
+    print('3: ',np.mean(out3), np.min(out3), np.max(out3))
+    print('4_1: ',np.mean(out4_1), np.min(out4_1), np.max(out4_1))
+    print('4_2: ',np.mean(out4_2), np.min(out4_2), np.max(out4_2))
+    print('4_3: ',np.mean(out4_3), np.min(out4_3), np.max(out4_3))        
     newout = np.vstack(outputs)
     outputs = np.mean(newout,0)
 
     newout = np.vstack(outputs2)
     outputs2 = np.mean(newout,0)
-    out3=outputs
+    out3=1.1*((outputs*15+outputs2*1)/16)-1
     
 
     vels=1
@@ -1775,6 +1814,8 @@ for f_idx in range(0,len(directories)):
     vels = vels[vels!=0]
     out3 = out3[out3!=0]
     print('Min, Max: ', np.min(vels), np.max(vels))
+    print('Min out, Max out: ', np.min(out3), np.max(out3))
+
     mean_loss =  np.abs(np.mean(vels)-np.mean(out3))
     print('Mean Vy from PT: ', np.mean(vels))
     
@@ -1794,7 +1835,7 @@ for f_idx in range(0,len(directories)):
                     norm.ppf(0.9999, a,b), target_length)
 
     distr_torch1=norm.pdf(xtorch, a,b)
-    plt.plot(xtorch,distr_torch1,c='r')
+    plt.plot(xtorch,distr_torch1,c='b')
 
 
     a,b = norm.fit(w)
@@ -1807,7 +1848,7 @@ for f_idx in range(0,len(directories)):
     plt.plot(xtorch,distr_torch,c='g')
     plt.ylabel('Probability Density')
     plt.xlabel('Speed (pixels/frame)')
-    plt.title('Vy Distribution for '+str(base), fontsize=6)
+    plt.title('Vy Distribution for '+str(base), fontsize=12)
     plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
     plt.grid(True)
     plt.tight_layout()
@@ -1815,79 +1856,156 @@ for f_idx in range(0,len(directories)):
     w1 = wasserstein_distance(distr_torch, distr_torch1)
     print ('Earth Movers Distance: ', w1)
     
-    final_out_vy.append(np.sort(out1))
-    final_true_vy.append(b)
+    final_out_vy.append(q)
+    final_true_vy.append(w)
     vy_w1.append(w1)
     
+    ########################
+    ###  Directionality  ###
+    ########################
+    # vels=1
+    model0 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
+    model0.load_state_dict(torch.load('models/directionality_volod3_448px_disp_lbm_5_04'))
+    model0.to(device).eval()
+
+    model1 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
+    model1.load_state_dict(torch.load('models/directionality_volod1_384px_disp_lbm_5_15'))
+    model1.to(device).eval()
+
+
+    model2 = timm.create_model('regnetx_064', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
+    model2.load_state_dict(torch.load('models/directionality_regnetx064_384px_disp_lbm_5_15_v2'))
+    model2.to(device).eval()
+
+    model3 = timm.create_model('regnetx_064', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
+    model3.load_state_dict(torch.load('models/directionality_regnetx064_384px_disp_lbm_5_15'))
+    model3.to(device).eval()
     
-print('Average Speed Error for all Files: ',np.mean(file_error))
-print('Average MSE (speed) Error for all Files: ',np.mean(file_mse))
-print('Average W1 (speed) Error for all Files: ',np.mean(speed_w1))
 
-print('Average Angle Error for all Files: ',np.mean(file_error_ang))
-print('Average MSE (angle) Error for all Files: ',np.mean(file_mse_ang))
-print('Average W1 (angle) Error for all Files: ',np.mean(ang_w1))
 
-print('Average Vx Error for all Files: ',np.mean(file_error_vx))
-print('Average MSE (Vx) Error for all Files: ',np.mean(file_mse_vx))
-print('Average W1 (Vx) Error for all Files: ',np.mean(vx_w1))
+    outputs=[]
+    torch.cuda.empty_cache()
+    gc.collect()
 
-print('Average Vy Error for all Files: ',np.mean(file_error_vy))
-print('Average MSE (Vy) Error for all Files: ',np.mean(file_mse_vy))
-print('Average W1 (Vy) Error for all Files: ',np.mean(vy_w1))
+    with torch.no_grad():
+        for x in test_dataloader2:
+            x2 = torchvision.transforms.functional.resize(x, 384)
+            out0 = (model0((x).to(device)).detach().cpu().numpy())
+            out1 = (model1((x2).to(device)).detach().cpu().numpy())
+            out2 = (model2((x2).to(device)).detach().cpu().numpy())
+            out3 = (model3((x2).to(device)).detach().cpu().numpy())
+            out = (out3*2+out2+out1*8+out0*2)/13
 
-print(len(final_out))
-print(final_out[0].shape)
-q = np.sort(np.mean(np.hstack(final_out),0))
-w = np.sort(np.mean(np.hstack(final_true),0))
-print(q.shape)
-plt.plot(q, c='b', linewidth=2)
-plt.plot(w, c='g', linewidth=2)
-plt.xlabel('Vector Index')
-plt.ylabel('Speed (pixels/frame)')
-plt.title('Total Speed Vector for All Test Data', fontsize=6)
-plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
-plt.grid(True)
-plt.tight_layout()
-plt.savefig('Speed_final.png')
+            outputs.append(out)
+    print('directionalities: ', out0, out1, out2, out3)
+    directionality = []
+    for i in range(len(tracks)):
+        idx = tracks[i]
+        if df[df.TRACK_ID==idx].sort_values(by='FRAME').FRAME.iloc[-1] < (images.shape[0]*images.shape[1]):
+            posx = np.array(df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_X)
+            posy = np.array(df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_Y)
 
-a,b,c,d = betaprime.fit(q)
-xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
-                betaprime.ppf(0.9999, a,b,c,d), target_length)
-distr_torch=betaprime.pdf(xtorch, a,b,c,d)
-plt.plot(xtorch,distr_torch,c='r')
-a,b,c,d = betaprime.fit(w) 
-xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
-                betaprime.ppf(0.9999, a,b,c,d), target_length)
-distr_torch=betaprime.pdf(xtorch, a,b,c,d)
-plt.plot(xtorch,distr_torch,c='g')
-plt.title('Total Speed Distribution for All Test Data')
-plt.xlabel('Speed (pixels/frame)')
-plt.ylabel('Probability Density')
-plt.legend(['Prediction', 'Ground Truth'])
-plt.xscale('log')
-plt.yscale('log')
-plt.savefig('Speed_distribution_final.png')
+            xpart = posx[~np.isnan(posx)]
+            ypart = posy[~np.isnan(posy)]
+            try:
+                xdist = xpart[-1] - xpart[0]
+                ydist = ypart[-1] - ypart[0]
+                speed = np.sum(np.sqrt(np.diff(xpart)**2+np.diff(ypart)**2))
+                disp = np.sqrt(xdist**2+ydist**2)
+                directionality.append(np.nanmean(disp)/np.nanmean(speed))
+            except:
+                directionality.append(0)
+        
+    
+    direction =  np.nanmean(directionality)
+    mean_loss =  np.abs(direction-np.mean(outputs))
+    print('Directionality: ', direction)
+    
+    print('Absolute Error of Average direction: ',mean_loss)
+    final_true_direction.append(direction)
+    final_out_direction.append(np.mean(outputs))
+    final_error_direction.append(mean_loss)
+    
+    
+# print('Average Speed Error for all Files: ',np.nanmean(file_error))
+# print('Average MSE (speed) Error for all Files: ',np.nanmean(file_mse))
+# print('Average W1 (speed) Error for all Files: ',np.nanmean(speed_w1))
+
+print('Average Angle Error for all Files: ',np.nanmean(file_error_ang))
+print('Average MSE (angle) Error for all Files: ',np.nanmean(file_mse_ang))
+print('Average W1 (angle) Error for all Files: ',np.nanmean(ang_w1))
+
+print('Average Vx Error for all Files: ',np.nanmean(file_error_vx))
+print('Average MSE (Vx) Error for all Files: ',np.nanmean(file_mse_vx))
+print('Average W1 (Vx) Error for all Files: ',np.nanmean(vx_w1))
+
+print('Average Vy Error for all Files: ',np.nanmean(file_error_vy))
+print('Average MSE (Vy) Error for all Files: ',np.nanmean(file_mse_vy))
+print('Average W1 (Vy) Error for all Files: ',np.nanmean(vy_w1))
+
+print('Average Directionality Error for all Files: ',np.nanmean(final_error_direction))
+
+
+
+# print(len(final_out))
+# print(final_out[0].shape)
+# q = np.sort(np.hstack(final_out))
+# w = np.sort(np.hstack(final_true))
+# print(q.shape)
+# plt.plot(q, c='b', linewidth=2)
+# plt.plot(w, c='g', linewidth=2)
+# plt.xlabel('Vector Index')
+# plt.ylabel('Speed (pixels/frame)')
+# plt.title('Total Speed Vector for All Test Data', fontsize=12)
+# plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
+# plt.grid(True)
+# plt.tight_layout()
+# plt.savefig('Speed_final.png')
+# plt.show()
+
+# a,b,c,d = betaprime.fit(q)
+# xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
+                # betaprime.ppf(0.9999, a,b,c,d), target_length)
+# distr_torch=betaprime.pdf(xtorch, a,b,c,d)
+# plt.plot(xtorch,distr_torch,c='r')
+# a,b,c,d = betaprime.fit(w) 
+# xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
+                # betaprime.ppf(0.9999, a,b,c,d), target_length)
+# distr_torch=betaprime.pdf(xtorch, a,b,c,d)
+# plt.plot(xtorch,distr_torch,c='g')
+# plt.title('Total Speed Distribution for All Test Data')
+# plt.xlabel('Speed (pixels/frame)')
+# plt.ylabel('Probability Density')
+# plt.legend(['Prediction', 'Ground Truth'])
+# plt.xscale('log')
+# plt.yscale('log')
+# plt.savefig('Speed_distribution_final.png')
+# plt.show()
+plt.scatter(final_out_direction, final_true_direction)
+plt.title('Directionality Predictions')
+plt.xlabel('Predictions')
+plt.ylabel('Particle Tracking')
 
 # Angles
-q = np.sort(np.mean(np.hstack(final_out_ang),0))
+q = np.sort(np.hstack(final_out_ang)[::400])
 print(q.shape)
-w = np.sort(np.mean(np.hstack(final_true_ang),0))
+w = np.sort(np.hstack(final_true_ang)[::400])
 plt.plot(q, c='b', linewidth=2)
 plt.plot(w, c='g', linewidth=2)
 plt.xlabel('Vector Index')
 plt.ylabel('Turn Angle (degrees)')
-plt.title('Total Turn Angle Vector for All Test Data', fontsize=6)
+plt.title('Total Turn Angle Vector for All Test Data', fontsize=12)
 plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
 plt.grid(True)
 plt.tight_layout()
 plt.savefig('angles_final.png')
+plt.show()
 
 a,b,c,d = betaprime.fit(q)
 xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
                 betaprime.ppf(0.9999, a,b,c,d), target_length)
 distr_torch=betaprime.pdf(xtorch, a,b,c,d)
-plt.plot(xtorch,distr_torch,c='r')
+plt.plot(xtorch,distr_torch,c='b')
 a,b,c,d = betaprime.fit(w) 
 xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
                 betaprime.ppf(0.9999, a,b,c,d), target_length)
@@ -1900,26 +2018,28 @@ plt.legend(['Prediction', 'Ground Truth'])
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig('angle_distribution_final.png')
+plt.show()
 
 #Vx
-q = np.sort(np.mean(np.hstack(final_out_vx),0))
+q = np.sort(np.hstack(final_out_vx)[::400])
 print(q.shape)
-w = np.sort(np.mean(np.hstack(final_true_vx),0))
+w = np.sort(np.hstack(final_true_vx)[::400])
 plt.plot(q, c='b', linewidth=2)
 plt.plot(w, c='g', linewidth=2)
 plt.xlabel('Vector Index')
 plt.ylabel('Vx (pixels/frame)')
-plt.title('Total Vx Vector for All Test Data', fontsize=6)
+plt.title('Total Vx Vector for All Test Data', fontsize=12)
 plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
 plt.grid(True)
 plt.tight_layout()
 plt.savefig('Vx_final.png')
+plt.show()
 
 a,b,c,d = betaprime.fit(q)
 xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
                 betaprime.ppf(0.9999, a,b,c,d), target_length)
 distr_torch=betaprime.pdf(xtorch, a,b,c,d)
-plt.plot(xtorch,distr_torch,c='r')
+plt.plot(xtorch,distr_torch,c='b')
 a,b,c,d = betaprime.fit(w) 
 xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
                 betaprime.ppf(0.9999, a,b,c,d), target_length)
@@ -1932,26 +2052,28 @@ plt.legend(['Prediction', 'Ground Truth'])
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig('Vx_distribution_final.png')
+plt.show()
 
 #Vy
-q = np.sort(np.mean(np.hstack(final_out_vy),0))
+q = np.sort(np.hstack(final_out_vy)[::400])
 print(q.shape)
-w = np.sort(np.mean(np.hstack(final_true_vy),0))
+w = np.sort(np.hstack(final_true_vy)[::400])
 plt.plot(q, c='b', linewidth=2)
 plt.plot(w, c='g', linewidth=2)
 plt.xlabel('Vector Index')
 plt.ylabel('Vy (pixels/frame)')
-plt.title('Total Vy Vector for All Test Data', fontsize=6)
+plt.title('Total Vy Vector for All Test Data', fontsize=12)
 plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
 plt.grid(True)
 plt.tight_layout()
 plt.savefig('Vy_final.png')
+plt.show()
 
 a,b,c,d = betaprime.fit(q)
 xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
                 betaprime.ppf(0.9999, a,b,c,d), target_length)
 distr_torch=betaprime.pdf(xtorch, a,b,c,d)
-plt.plot(xtorch,distr_torch,c='r')
+plt.plot(xtorch,distr_torch,c='b')
 a,b,c,d = betaprime.fit(w) 
 xtorch= np.linspace(betaprime.ppf(0.0001, a,b,c,d),
                 betaprime.ppf(0.9999, a,b,c,d), target_length)
@@ -1964,3 +2086,4 @@ plt.legend(['Prediction', 'Ground Truth'])
 plt.xscale('log')
 plt.yscale('log')
 plt.savefig('Vy_distribution_final.png')
+plt.show()
