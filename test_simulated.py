@@ -1556,8 +1556,8 @@ for f_idx in range(0,len(directories)):
     xtorch= np.linspace(expon.ppf(0.0001, a,b),
                     expon.ppf(0.9999, a,b), target_length)
                     
-    plt.xlim([1e-1, 400])
-    plt.ylim([1e-4, 1e-1])
+    plt.xlim([-5, 180])
+    #plt.ylim([1e-4, 1e-1])
     distr_torch=expon.pdf(xtorch, a,b)
     plt.plot(xtorch,distr_torch,c='g')
     plt.ylabel('Probability Density')
