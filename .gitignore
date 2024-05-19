@@ -26,6 +26,9 @@ speed_model_volod1_224px_dispBrown_4_21
 speed_model_volod1_384px_disp_4_22
 speed_model_volod1_patch_4x224px_dispBrown_4_21
 *.jpg
+!testing/
+!testing/ground_truth_trajectories/
+!testing/ground_truth_trajectories/*.csv
 *.csv
 /models
 MSD_model_volod1_384px_disp_200
