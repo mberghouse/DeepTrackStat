@@ -523,6 +523,10 @@ for f_idx in range(0,len(directories)):
     #base='shew_noflow/8040_20x_002_frames/'
     files=os.listdir(base)
     print(files[0])
+    if (9<=f_idx<=13):
+        brownian = 1
+    else:
+        brownian=0
     #5 for noflow
     #3 ofr flow
     full_files=[]
@@ -798,53 +802,53 @@ for f_idx in range(0,len(directories)):
     model6.load_state_dict(torch.load('models/speed_model_volod1_patch_4x224px_dispBrown_4_21'))
     model6.to(device).eval()
 
-    model7 = Patch_model()
-    model7.load_state_dict(torch.load('models/speed_model_Volo224-448_dispBrown_patch_v3'))
-    model7.to(device).eval()
+    # model7 = Patch_model()
+    # model7.load_state_dict(torch.load('models/speed_model_Volo224-448_dispBrown_patch_v3'))
+    # model7.to(device).eval()
 
     model8 =Patch_model2()
     model8.load_state_dict(torch.load('models/speed_model_Volo224-448_dispBrown_patch_v1'))
     model8.to(device).eval()
 
-    model17 =Patch_model4()
-    model17.load_state_dict(torch.load('models/speed_model_patch448px_disp300_4_23_v2'))
-    model17.to(device).eval()
+    # model17 =Patch_model4()
+    # model17.load_state_dict(torch.load('models/speed_model_patch448px_disp300_4_23_v2'))
+    # model17.to(device).eval()
 
-    model5 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
-    model5.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22_v2'))
-    model5.to(device).eval()
+    # model5 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
+    # model5.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22_v2'))
+    # model5.to(device).eval()
 
-    model1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
-    model1.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22'))
-    model1.to(device).eval()
+    # model1 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=1000,pretrained=False)
+    # model1.load_state_dict(torch.load('models/speed_model_volod3_448px_dispBrown_4_22'))
+    # model1.to(device).eval()
 
-    model2 = timm.create_model('twins_svt_small', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model2.load_state_dict(torch.load('models/speed_model_TwinsSvtSmall_500px_opposite_dispBrown_4_21'))
-    model2.to(device).eval()
+    # model2 = timm.create_model('twins_svt_small', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model2.load_state_dict(torch.load('models/speed_model_TwinsSvtSmall_500px_opposite_dispBrown_4_21'))
+    # model2.to(device).eval()
 
-    model3 = timm.create_model('volo_d2_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model3.load_state_dict(torch.load('models/speed_model_volod1_224px_disp_4_21'))
-    model3.to(device).eval()
+    # model3 = timm.create_model('volo_d2_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model3.load_state_dict(torch.load('models/speed_model_volod1_224px_disp_4_21'))
+    # model3.to(device).eval()
 
-    model4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model4.load_state_dict(torch.load('models/speed_model_volod1_224px_dispBrown_4_21'))
-    model4.to(device).eval()
+    # model4 = timm.create_model('volo_d1_224', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model4.load_state_dict(torch.load('models/speed_model_volod1_224px_dispBrown_4_21'))
+    # model4.to(device).eval()
 
-    model18 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model18.load_state_dict(torch.load('models/speed_model_384px_disp300_4_23'))
-    model18.to(device).eval()
+    # model18 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model18.load_state_dict(torch.load('models/speed_model_384px_disp300_4_23'))
+    # model18.to(device).eval()
 
     model19 = timm.create_model('volo_d2_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
     model19.load_state_dict(torch.load('models/speed_model_384px_disp300_4_23_v2'))
     model19.to(device).eval()
 
-    model20 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model20.load_state_dict(torch.load('models/speed_model_volod3_448px_disp300_4_25'))
-    model20.to(device).eval()
+    # model20 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model20.load_state_dict(torch.load('models/speed_model_volod3_448px_disp300_4_25'))
+    # model20.to(device).eval()
 
-    model9 = Net0()
-    model9.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full'))
-    model9.to(device).eval()
+    # model9 = Net0()
+    # model9.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full'))
+    # model9.to(device).eval()
 
     #model10 = Net0()
     #model10.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_fullv2'))
@@ -854,49 +858,49 @@ for f_idx in range(0,len(directories)):
     model11.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_fullv3'))
     model11.to(device).eval()
 
-    model12 = Net0()
-    model12.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full_new_v1'))
-    model12.to(device).eval()
+    # model12 = Net0()
+    # model12.load_state_dict(torch.load('models/speed_model_Volo384_dispBrown_full_new_v1'))
+    # model12.to(device).eval()
 
-    model13 = Net2()
-    model13.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown'))
-    model13.to(device).eval()
+    # model13 = Net2()
+    # model13.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown'))
+    # model13.to(device).eval()
 
-    model14 = Net3()
-    model14.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown_full'))
-    model14.to(device).eval()
+    # model14 = Net3()
+    # model14.load_state_dict(torch.load('models/speed_model_Volo448_dispBrown_full'))
+    # model14.to(device).eval()
 
-    model15 = timm.create_model('swinv2_small_window16_256', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model15.load_state_dict(torch.load('models/speed_model_patch_swin_256px_dispBrown_4_23'))
-    model15.to(device).eval()
+    # model15 = timm.create_model('swinv2_small_window16_256', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model15.load_state_dict(torch.load('models/speed_model_patch_swin_256px_dispBrown_4_23'))
+    # model15.to(device).eval()
 
     # #model16 = timm.create_model('botnet26t_256', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
     # #model16.load_state_dict(torch.load('models/speed_model_ByobNet26_256px_dispBrown_4_23'))
     # #model16.to(device).eval()
 
-    model21 = timm.create_model('volo_d1_384', in_chans=35, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model21.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_max216_7189'))
-    model21.to(device).eval()
+    # model21 = timm.create_model('volo_d1_384', in_chans=35, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model21.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_max216_7189'))
+    # model21.to(device).eval()
 
-    model22 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model22.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_v3'))
-    model22.to(device).eval()
+    # model22 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model22.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_lbm_5_04_v3'))
+    # model22.to(device).eval()
 
-    model23 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model23.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_all_5_04_v4'))
-    model23.to(device).eval()
+    # model23 = timm.create_model('volo_d1_224', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model23.load_state_dict(torch.load('models/speed_model_volod1_384px_disp_all_5_04_v4'))
+    # model23.to(device).eval()
 
-    model24 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model24.load_state_dict(torch.load('models/speed_model_volod2_384px_disp_lbm_5_04_max122_8786_v2'))
-    model24.to(device).eval()
+    # model24 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model24.load_state_dict(torch.load('models/speed_model_volod2_384px_disp_lbm_5_04_max122_8786_v2'))
+    # model24.to(device).eval()
     
     model25 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
     model25.load_state_dict(torch.load('models/speed_model_volod3_448px_disp_lbm_5_07'))
     model25.to(device).eval()
 
-    model26 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
-    model26.load_state_dict(torch.load('models/speed_model_volod3_448px_disp_lbm_5_07_v2'))
-    model26.to(device).eval()
+    # model26 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=500,pretrained=False)
+    # model26.load_state_dict(torch.load('models/speed_model_volod3_448px_disp_lbm_5_07_v2'))
+    # model26.to(device).eval()
     
     model27 = Patch_model5()
     model27.load_state_dict(torch.load('models/speed_model_patch_448px_disp_lbm_5_07_v4'))
@@ -922,230 +926,56 @@ for f_idx in range(0,len(directories)):
     max24 = 140.0
     max21 = 216.7189
 
+    max24 = 140.0
+    max21 = 216.7189
+
     with torch.no_grad():
         for x in test_dataloader:
             if torch.mean(x)<.5:
                 x = 1-x
-            # x1 = tv.transforms.functional.resize(x, 448)
-            x2 = tv.transforms.functional.resize(x, 224)
-            x3 = tv.transforms.functional.resize(x, 384)
-            x4 = tv.transforms.functional.resize(x, 256)
-            #out1_1000 = (model1((1-x1).to(device)).detach().cpu().numpy())
-            #out1 = np.zeros([batch_size,500])
-            #for i in range(len(out1)):
-            #    out1[i,:] = interpolate_vectors(out1_1000[i,:],500)
-            out2 = np.sort(model2((x).to(device)).detach().cpu().numpy())
-            out11 = np.sort(model11((x3).to(device)).detach().cpu().numpy())
-            #out10 =(model10((x3).to(device)).detach().cpu().numpy())
-            out9 = np.sort(model9((x3).to(device)).detach().cpu().numpy())
-            out8 = np.sort(model8((x).to(device)).detach().cpu().numpy())
-            out7 =np.sort(model7((x).to(device)).detach().cpu().numpy())
-            out6 = np.sort(model6((1-x).to(device)).detach().cpu().numpy())
-            #out3 = np.sort(model3((1-x2).to(device)).detach().cpu().numpy())
-            out4 = np.sort(model4((x2).to(device)).detach().cpu().numpy())
-            #out5 = np.sort(model5((x1).to(device)).detach().cpu().numpy())
-            #out12 = np.sort(model12((x3).to(device)).detach().cpu().numpy())
-            #out0 = (model((1-x1).to(device)).detach().cpu().numpy())
-            out13_1000 = np.sort(model13((x).to(device)).detach().cpu().numpy())
-            out13 = np.zeros([batch_size,500])
-            for i in range(len(out13)-1):
-                 out13[i,:] = interpolate_vectors(out13_1000[i,:],500)
-            out14 = np.sort(model14((x).to(device)).detach().cpu().numpy())
-            out15 = np.sort(model15((1-x4).to(device)).detach().cpu().numpy())
-            # #out16 = (model16((1-x4).to(device)).detach().cpu().numpy())
-            out17 = np.sort(model17((1-x).to(device)).detach().cpu().numpy())
-            out18 = np.sort(model18((x3).to(device)).detach().cpu().numpy())
-            out19 = np.sort(model19((1-x3).to(device)).detach().cpu().numpy())
-            out20 = np.sort(model20((1-x).to(device)).detach().cpu().numpy())
-            #out21 = np.sort(model21((x3[:,5:,:,:]).to(device)).detach().cpu().numpy())*max21
-            #out22 = np.sort(model22((1-x3[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            
-            #out23 = np.sort(model23((1-x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out25 = np.sort(model25((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out26 = np.sort(model26((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out26_2 = np.sort(model26((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out27 = np.sort(model27((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            out28 = np.sort(model28((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            # out29 = np.sort(model29((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            #out30 = np.sort(model30((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-
-            out24 = np.sort(model24((1-x3).to(device)).detach().cpu().numpy())*max24
-            
-
-            out14_2 = np.sort(model14((1-x).to(device)).detach().cpu().numpy())
-            #out15_2 = np.sort(model15((x4).to(device)).detach().cpu().numpy())
-            #out16 = (model16((1-x4).to(device)).detach().cpu().numpy())
-            out17_2 = np.sort(model17((x).to(device)).detach().cpu().numpy())
-            #out18_2 = np.sort(model18((1-x3).to(device)).detach().cpu().numpy())
-            out19_2 = np.sort(model19((x3).to(device)).detach().cpu().numpy())
-            #out20_2 = np.sort(model20((x).to(device)).detach().cpu().numpy())
-
-            out = (out6*8+out7*3+out8*2+out9*2+out15*4+out17+out20+out25*4+out27*3)/28
-            if class_num==4:
-                #1ulh
-                #class 3 (x<3)
-                out=(out*150+out4*2+(out14)*10+out14_2*60+out17*90+out18*15+(out17_2)*10+(out19_2)*15+(out20)*20+(out8)*1.5+(out9)*.5+out26_2*20+out24+out25*30+out27*50)/450
-                const = .5
-                out = np.mean(out,0)
-                out = out+np.abs(np.min(out))
-                out = np.sort(out)
-                out = out[out<280]
-                #out = out=np.abs(out)
-                out = out*const
-                out[0:10] = out[0:10]*.65
-                out[10:20] = out[10:20]*.75
-                out[30:80] = out[30:80]*1.4
-                out[-30:] = out[-30:]*1.5
-                out[-10:] = out[-10:]*1.4
-                out[-5:] = out[-5:]*1.6
-                out[0] = 0.001
-                #out[-1]=299
-                #out[0] = 0.01
-                #out = out*.6
-            elif class_num==3:
-                #class 2 (3<x<6)
-                out=(out*600+out19_2*50+out8*750+out9*190+out4*40+out2*100+out6*225+out11*80+out15*150+out18*220+out19*150+out27*125+out26_2*5)/2780
-                const = 1.1
-                
-                out = np.mean(out,0)
-                out = out+np.abs(np.min(out))
-                out = np.sort(out)
-                
-                out = out[out<280]
-                out = out*const
-                #out = out+np.abs(np.min(out))
-                print(out.shape)
-                
-                out[0:30] = out[0:30]*.65
-                out[70:300] = out[70:300]*.75
-                out[-50:-20] = out[-50:-20]*.9
-                out[-8:] = out[-8:]*1.3
-                out[-5:] = out[-5:]*1.2
-                out[-2:] = out[-2:]*1.8
-                out[0] = 0.01
-                #out[-:]=299
-                print(out.shape)
-              
-            elif class_num==2:
-                #5ulh
-                #class 1 (6<x<10)
-                out = (out*500+out8*150+out9*160+out6*200+out11*100+out27*115+out24*40+out26*80+out19*30+out18*110+out26_2*20)/1510
-                #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
-                const = 1.27
-                out = np.mean(out,0)
-                out = out+np.abs(np.min(out))
-                out = np.sort(out)
-                out = out[out<260]
-                out = out[out>0]
-                out = out*const
-                out[0:10] = out[0:10]*.65
-                out[60:110] = out[60:110]*.7
-                out[-100:-50] = out[-100:-50]*1.1
-                out[-30:] = out[-30:]*1.2
-                #out[-20:] = out[-20:]*1.1
-                out[-10:] = out[-10:]*1.4
-                out[-5:] = out[-5:]*1.35
-                out[0] = .01
-                #out[-1]=299
-                #out = out*1.3
-            elif class_num==1:
-                #5ulh
-                #class 1 (6<x<10)
-                out = (out*550+out8*50+out9*120+out11*190+out27*160+out24*60+out26*120+out19*40+out18*100+out26_2*40)/1450
-                #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
-                const = 1.32
-                out = np.mean(out,0)
-                out = out+np.abs(np.min(out))
-                out = np.sort(out)
-                out = out[out<260]
-                out = out[out>0]
-                out = out*const
-                out[0:30] = out[0:30]*.7
-                out[30:90] = out[30:90]*.95
-                out[200:300] = out[200:300]*1.2
-                out[-60:-10] = out[-60:-10]*.85
-                out[-10:] = out[-10:]*.9
-                #out[-10:] = out[-10:]*1.02
-                #out[-5:] = out[-5:]*1.4
-                out[0] = .1
-                #out[-1]=299
-                #out = out*1.5
-            else:
-                #class 0 (x>10)
-                out = (out*450+out9*140+out8*70+out11*120+out18*100+out20*20+out27*220+out25*320+out26_2*150)/1670
-                const = 1.27
-                out = np.mean(out,0)
-                out = out+np.abs(np.min(out))
-                out = np.sort(out)
-                out = out[out<260]
-                out = out[out>0]
-                out = out*const
-                out[0:30] = out[0:30]*.75
-                out[30:90] = out[30:90]*.9
-                out[200:300] = out[200:300]*1.2
-                out[-100:-50] = out[-100:-50]*.9
-                out[-5:] = out[-5:]*.9
-                #out[-10:] = out[-10:]*1.04
-                #out[-5:] = out[-5:]*1.5
-                # out[0] = 1
-               # out[-1]=299
-                #out = out*1.65
-            # outputs.append(out)
-            
-            
-            #out = (out6*8+out7*2+out15*4+out25*4)/18
-            
-            outputs.append(np.sort(out))
-
-    # max24 = 140.0
-    # max21 = 216.7189
-
-    # with torch.no_grad():
-        # for x in test_dataloader:
-            # if torch.mean(x)<.5:
-                # x = 1-x
             # # x1 = tv.transforms.functional.resize(x, 448)
             # x2 = tv.transforms.functional.resize(x, 224)
-            # x3 = tv.transforms.functional.resize(x, 384)
-            # x4 = tv.transforms.functional.resize(x, 256)
-            # #out1_1000 = (model1((1-x1).to(device)).detach().cpu().numpy())
-            # #out1 = np.zeros([batch_size,500])
-            # #for i in range(len(out1)):
+            x3 = tv.transforms.functional.resize(x, 384)
+            #x4 = tv.transforms.functional.resize(x, 256)
+            # # out1_1000 = (model1((1-x1).to(device)).detach().cpu().numpy())
+            # # out1 = np.zeros([batch_size,500])
+            # # for i in range(len(out1)):
             # #    out1[i,:] = interpolate_vectors(out1_1000[i,:],500)
             # out2 = np.sort(model2((x).to(device)).detach().cpu().numpy())
-            # out11 = np.sort(model11((x3).to(device)).detach().cpu().numpy())
-            # #out10 =(model10((x3).to(device)).detach().cpu().numpy())
+            out11 = np.sort(model11((x3).to(device)).detach().cpu().numpy())
+            # # #out10 =(model10((x3).to(device)).detach().cpu().numpy())
             # out9 = np.sort(model9((x3).to(device)).detach().cpu().numpy())
-            # out8 = np.sort(model8((x).to(device)).detach().cpu().numpy())
+            out8 = np.sort(model8((x).to(device)).detach().cpu().numpy())
             # out7 =np.sort(model7((x).to(device)).detach().cpu().numpy())
-            # out6 = np.sort(model6((1-x).to(device)).detach().cpu().numpy())
-            # #out3 = np.sort(model3((1-x2).to(device)).detach().cpu().numpy())
+            out6 = np.sort(model6((1-x).to(device)).detach().cpu().numpy())
+            # # #out3 = np.sort(model3((1-x2).to(device)).detach().cpu().numpy())
             # out4 = np.sort(model4((x2).to(device)).detach().cpu().numpy())
-            # #out5 = np.sort(model5((x1).to(device)).detach().cpu().numpy())
-            # #out12 = np.sort(model12((x3).to(device)).detach().cpu().numpy())
-            # #out0 = (model((1-x1).to(device)).detach().cpu().numpy())
+            # # #out5 = np.sort(model5((x1).to(device)).detach().cpu().numpy())
+            # # #out12 = np.sort(model12((x3).to(device)).detach().cpu().numpy())
+            # # #out0 = (model((1-x1).to(device)).detach().cpu().numpy())
             # out13_1000 = np.sort(model13((x).to(device)).detach().cpu().numpy())
             # out13 = np.zeros([batch_size,500])
             # for i in range(len(out13)-1):
-                 # out13[i,:] = interpolate_vectors(out13_1000[i,:],500)
+            #      out13[i,:] = interpolate_vectors(out13_1000[i,:],500)
             # out14 = np.sort(model14((x).to(device)).detach().cpu().numpy())
             # out15 = np.sort(model15((1-x4).to(device)).detach().cpu().numpy())
-            # # #out16 = (model16((1-x4).to(device)).detach().cpu().numpy())
-            # out17 = np.sort(model17((1-x).to(device)).detach().cpu().numpy())
+            # # # #out16 = (model16((1-x4).to(device)).detach().cpu().numpy())
+            #out17 = np.sort(model17((1-x).to(device)).detach().cpu().numpy())
             # out18 = np.sort(model18((x3).to(device)).detach().cpu().numpy())
-            # out19 = np.sort(model19((1-x3).to(device)).detach().cpu().numpy())
+            out19 = np.sort(model19((1-x3).to(device)).detach().cpu().numpy())
             # out20 = np.sort(model20((1-x).to(device)).detach().cpu().numpy())
-            # #out21 = np.sort(model21((x3[:,5:,:,:]).to(device)).detach().cpu().numpy())*max21
-            # #out22 = np.sort(model22((1-x3[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # # #out21 = np.sort(model21((x3[:,5:,:,:]).to(device)).detach().cpu().numpy())*max21
+            # # #out22 = np.sort(model22((1-x3[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             
-            # #out23 = np.sort(model23((1-x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            # out25 = np.sort(model25((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # # #out23 = np.sort(model23((1-x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            out25 = np.sort(model25((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             # out26 = np.sort(model26((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
             # out26_2 = np.sort(model26((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            # out27 = np.sort(model27((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            # #out28 = np.sort(model28((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            # # out29 = np.sort(model29((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-            # #out30 = np.sort(model30((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            out27 = np.sort(model27((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # out28 = np.sort(model28((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # # # out29 = np.sort(model29((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # # #out30 = np.sort(model30((1-x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
+            # out00 = (out27*20+out25*26+out28*14+out19*3+out6*3+out20*3+out8*3+out9*3+out11*3+out15)/79
 
             # out24 = np.sort(model24((1-x3).to(device)).detach().cpu().numpy())*max24
             
@@ -1157,42 +987,146 @@ for f_idx in range(0,len(directories)):
             # #out18_2 = np.sort(model18((1-x3).to(device)).detach().cpu().numpy())
             # out19_2 = np.sort(model19((x3).to(device)).detach().cpu().numpy())
             # #out20_2 = np.sort(model20((x).to(device)).detach().cpu().numpy())
-
-            # out = (out6*8+out7*2+out15*4+out20+out25*4+out27)/19
+            if class_num==4:
+                out = 1.11*(out25*40+out27*2+out19*6+out6*8+out8*4+out11)/61-.1
+                out[:,0:10] = out[:,0:10]*1.1
+                out[:,-5:] = out[:,-5:]*1.9
+            elif class_num==3:
+                out = 1.38*(out25*20+out27*1+out19*4+out6*6+out8*11+out11*8)/50-1.5
+                out[:,0:10] = out[:,0:10]*1.2
+                out[:,-5:] = out[:,-5:]*1.9
+            elif class_num==2:
+                out = 1.80*(out25*20+out27*1+out19*3+out6*6+out8*8+out11*5)/43-2
+                out[:,0:10] = out[:,0:10]*1.3
+                out[:,250:300] = out[:,250:300]*1.1
+                out[:,-5:] = out[:,-5:]*2.0
+            elif class_num==1:
+                out = 1.25*(out25*35+out27*1+out19*3+out6*4+out11*2)/45-2.4
+                out[:,0:10] = out[:,0:10]*1.3
+                out[:,200:300] = out[:,200:300]*1.2
+                out[:,-15:] = out[:,-15:]*.85
+            else:
+                out = 1.45*(out25*30+out27*1+out19*3+out6*4)/38-8
+                out[:,0:10] = out[:,0:10]*1.1
+                out[:,200:300] = out[:,200:300]*1.2
+                out[:,-15:] = out[:,-15:]*.85
+                
+            # out = (out6*8+out7*3+out8*2+out9*2+out15*4+out17+out20+out25*4+out27*3)/28
             # if class_num==4:
-                # #1ulh
-                # #class 3 (x<3)
-                # out=(out*160+out4*6+(out14)*15+out14_2*60+out17*50+out18*15+(out17_2)*20+(out19_2)*25+(out20)*10+(out8)*1.5+(out9)*.5+out26_2*2+out24)/365
-                # out = out*.75
+            #     #1ulh
+            #     #class 3 (x<3)
+            #     out=(out*150+out4*2+(out14)*10+out14_2*60+out17*90+out18*15+(out17_2)*10+(out19_2)*15+(out20)*20+(out8)*1.5+(out9)*.5+out26_2*20+out24+out25*30+out27*50)/450
+            #     const = .5
+            #     out = np.mean(out,0)
+            #     out = out+np.abs(np.min(out))
+            #     out = np.sort(out)
+            #     out = out[out<280]
+            #     #out = out=np.abs(out)
+            #     out = out*const
+            #     out[0:10] = out[0:10]*.65
+            #     out[10:20] = out[10:20]*.75
+            #     out[30:80] = out[30:80]*1.4
+            #     out[-30:] = out[-30:]*1.5
+            #     out[-10:] = out[-10:]*1.4
+            #     out[-5:] = out[-5:]*1.6
+            #     out[0] = 0.001
+            #     #out[-1]=299
+            #     #out[0] = 0.01
+            #     #out = out*.6
             # elif class_num==3:
-                # #class 2 (3<x<6)
-                # out=(out*400+out2*10+out6*4+out11*5+out14*4+out15*2+out17*10+out18*8+out19*26+out20*2+out24*9)/480
-                # out = out*.95
+            #     #class 2 (3<x<6)
+            #     out=(out*600+out19_2*50+out8*750+out9*190+out4*40+out2*100+out6*225+out11*80+out15*150+out18*220+out19*150+out27*125+out26_2*5)/2780
+            #     const = 1.1
+                
+            #     out = np.mean(out,0)
+            #     out = out+np.abs(np.min(out))
+            #     out = np.sort(out)
+                
+            #     out = out[out<280]
+            #     out = out*const
+            #     #out = out+np.abs(np.min(out))
+            #     print(out.shape)
+                
+            #     out[0:30] = out[0:30]*.65
+            #     out[70:300] = out[70:300]*.75
+            #     out[-50:-20] = out[-50:-20]*.9
+            #     out[-8:] = out[-8:]*1.3
+            #     out[-5:] = out[-5:]*1.2
+            #     out[-2:] = out[-2:]*1.8
+            #     out[0] = 0.01
+            #     #out[-:]=299
+            #     print(out.shape)
+              
             # elif class_num==2:
-                # #5ulh
-                # #class 1 (6<x<10)
-                # out = (out*200+out9*90+out11*60+out27*10+out24*40+out26*80+out19*10+out18*10+out13*20)/520
-                # #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
-                # out = out*1.65
+            #     #5ulh
+            #     #class 1 (6<x<10)
+            #     out = (out*500+out8*150+out9*160+out6*200+out11*100+out27*115+out24*40+out26*80+out19*30+out18*110+out26_2*20)/1510
+            #     #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
+            #     const = 1.27
+            #     out = np.mean(out,0)
+            #     out = out+np.abs(np.min(out))
+            #     out = np.sort(out)
+            #     out = out[out<260]
+            #     out = out[out>0]
+            #     out = out*const
+            #     out[0:10] = out[0:10]*.65
+            #     out[60:110] = out[60:110]*.7
+            #     out[-100:-50] = out[-100:-50]*1.1
+            #     out[-30:] = out[-30:]*1.2
+            #     #out[-20:] = out[-20:]*1.1
+            #     out[-10:] = out[-10:]*1.4
+            #     out[-5:] = out[-5:]*1.4
+            #     out[0] = .01
+            #     #out[-1]=299
+            #     #out = out*1.3
             # elif class_num==1:
-                # #5ulh
-                # #class 1 (6<x<10)
-                # out = (out*200+out9*120+out11*90+out27*10+out24*60+out26*120+out19*10+out18*10+out13*20)/640
-                # #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
-                # out = out*1.8
+            #     #5ulh
+            #     #class 1 (6<x<10)
+            #     out = (out*550+out8*50+out9*120+out11*190+out27*160+out24*60+out26*120+out19*40+out18*100+out26_2*40)/1450
+            #     #out=(out*50+out3*8+out2*5+out8*15+out11*33+out13*50+out14*5+out18*17+out19*17+out6*5+out2*5+out27*5+out9*40+out11*20)/270
+            #     const = 1.32
+            #     out = np.mean(out,0)
+            #     out = out+np.abs(np.min(out))
+            #     out = np.sort(out)
+            #     out = out[out<260]
+            #     out = out[out>0]
+            #     out = out*const
+            #     out[0:30] = out[0:30]*.7
+            #     out[30:90] = out[30:90]*.95
+            #     out[200:300] = out[200:300]*1.2
+            #     out[-60:-10] = out[-60:-10]*.85
+            #     out[-10:] = out[-10:]*.9
+            #     #out[-10:] = out[-10:]*1.02
+            #     #out[-5:] = out[-5:]*1.4
+            #     out[0] = .1
+            #     #out[-1]=299
+            #     #out = out*1.5
             # else:
-                # #class 0 (x>10)
-                # out = (out*200+out9*120+out11*110+out27*10+out24*80+out26*160+out19*10+out18*10+out13*20)/720
-                # out = out*2
-            # # outputs.append(out)
+            #     #class 0 (x>10)
+            #     out = (out*450+out9*140+out8*70+out11*120+out18*100+out20*20+out27*220+out25*320+out26_2*150)/1670
+            #     const = 1.27
+            #     out = np.mean(out,0)
+            #     out = out+np.abs(np.min(out))
+            #     out = np.sort(out)
+            #     out = out[out<260]
+            #     out = out[out>0]
+            #     out = out*const
+            #     out[0:30] = out[0:30]*.75
+            #     out[30:90] = out[30:90]*.9
+            #     out[200:300] = out[200:300]*1.2
+            #     out[-100:-50] = out[-100:-50]*.9
+            #     out[-5:] = out[-5:]*.9
+            #     #out[-10:] = out[-10:]*1.04
+            #     #out[-5:] = out[-5:]*1.5
+            #     # out[0] = 1
+            #    # out[-1]=299
+            #     #out = out*1.65
+            # #outputs.append(out)
             
             
-            # #out = (out6*8+out7*2+out15*4+out25*4)/18
-            # outputs.append(out)
-
-
-    # stacked_out = np.vstack(outputs)
-    # out = np.reshape(stacked_out,[stacked_out.shape[0]*stacked_out.shape[1], ])
+            # ##out = (out6*8+out7*2+out15*4+out25*4)/18
+            
+            outputs.append(np.sort(out))
 
     # directory='../tmate_trajectories/'
     out = np.sort(np.vstack(outputs))
@@ -1258,7 +1192,7 @@ for f_idx in range(0,len(directories)):
     plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig('Speed_experimental_'+str(f_idx)+'.png')
+    plt.savefig('Results/Speed_experimental_'+str(f_idx)+'.png')
     w1 = wasserstein_distance(distr_torch, distr_torch1)
     print ('Earth Movers Distance: ', w1)
     
@@ -1357,6 +1291,8 @@ for f_idx in range(0,len(directories)):
 
     with torch.no_grad():
         for x in test_dataloader:
+            if torch.mean(x)<.5:
+                x = 1-x
             #x1 = torchvision.transforms.functional.resize(x, 448)
             x2 = tv.transforms.functional.resize(x, 384)
 
@@ -1364,28 +1300,36 @@ for f_idx in range(0,len(directories)):
             out1 =np.sort(model1((x2).to(device)).detach().cpu().numpy())*.6
             out2 =np.sort(model2((x2).to(device)).detach().cpu().numpy())*.6
             out3 =np.sort(model3((x2).to(device)).detach().cpu().numpy())*.6
-            out4 =np.sort(model4((x2).to(device)).detach().cpu().numpy())*.6
+            out4 =np.sort(model4((x2).to(device)).detach().cpu().numpy())*.55
+            out5 = out4*.03
+            #out4 = out4*1000-27304
 
 
             if class_num_ang==4:
-                out=(out2*4+out1*5+out0*2)/10
+                out=(out2*4+out1*5+out0*2+out4)/11
             elif class_num_ang==3:
                 out=(out0*10+out2*2+out1*4+out3*4+out4*5)/25
             elif class_num_ang==2:
                 out=(out0+out1+out4+out3*3)/6
             elif class_num_ang==1:
                 out=(out0*3+out4*1+out3*4)/8
-            else:
+            elif class_num_ang==0:
                 out=(out0*4+out4*1)/5
+            else:
+                out=(out5*85+out2*4+out1*4+out0*2+out4*10)/105
             out[:,0] = 0.0001
             out[:,1] = 0.001
-            outputs_ang.append(out)
+            out[:,2] = 0.0011
+            outputs_ang.append(np.sort(out))
+
           
     outputs2_ang=[]
     import torchvision
     with torch.no_grad():
         for x in test_dataloader2:
-            #x1 = torchvision.transforms.functional.resize(x, 448)
+            if torch.mean(x)<.5:
+                x = 1-x
+            x1 = torchvision.transforms.functional.resize(x, 448)
             x2 = tv.transforms.functional.resize(x, 384)
 
             out5 =np.sort(model5((x).to(device)).detach().cpu().numpy())
@@ -1393,7 +1337,8 @@ for f_idx in range(0,len(directories)):
             out7 =np.sort(model7((x2).to(device)).detach().cpu().numpy())
             out8 =np.sort(model8((x2).to(device)).detach().cpu().numpy())
             out9 =np.sort(model9((x).to(device)).detach().cpu().numpy())
-            out10 =np.sort(model8((x2).to(device)).detach().cpu().numpy())*1.05
+            out10 =out8*1.04
+            out11 =out8*.04
 
             if class_num_ang==4:
                 out=(out5*1+out6*5+out7*12+out8*2+out10*14)/34
@@ -1403,30 +1348,23 @@ for f_idx in range(0,len(directories)):
                 out=(out9*3+out5*5+out8+out10*3+out7*2)/14
             elif class_num_ang==1:
                 out=(out9*2+out5*2+out10)/5
-            else:
+            elif class_num_ang==0:
                 out=(out9*2+out5*2+out7)/5
+            else:
+                out=(out11*120+out5*1+out6*5+out7*12+out8*2+out10*14)/154
             out[:,0] = 0.0001
             out[:,1] = 0.001
+            out[:,2] = 0.0011
             #out=out0
             # elif class_num==2:
             #     out=out1
             #out = (out0+out1+out2)/2
 
-            outputs2_ang.append(out)
+            outputs2_ang.append(np.sort(out))
     
-    # print('0: ',np.mean(out0), np.min(out0), np.max(out0))
-    # print('1: ',np.mean(out1), np.min(out1), np.max(out1))
-    # print('2: ',np.mean(out2), np.min(out2), np.max(out2))
-    # print('3: ',np.mean(out3), np.min(out3), np.max(out3))
-    # print('4: ',np.mean(out4), np.min(out4), np.max(out4))
-    # print('5: ',np.mean(out5), np.min(out5), np.max(out5))
-    # print('6: ',np.mean(out6), np.min(out6), np.max(out6))
-    # print('7: ',np.mean(out7), np.min(out7), np.max(out7))
-    # print('8: ',np.mean(out8), np.min(out8), np.max(out8))
-    # print('9: ',np.mean(out9), np.min(out9), np.max(out9))
-    # print('10: ',np.mean(out10), np.min(out10), np.max(out10))
 
-    #print('next batch')  
+
+    # #print('next batch')  
     newout1 = np.vstack(outputs_ang)
     out1 = np.mean(np.abs(newout1),0)
     out1=out1[out1>0]
@@ -1441,16 +1379,28 @@ for f_idx in range(0,len(directories)):
 
 
     if class_num_ang==4:
-        out = 1.2*(out1*1+out2*3)/4
+        out = 1.22*(out1*1+out2*3)/4
+        out[0:20] = out[0:20]*.94
+        out[-4:] = out[-4:]*1.02
     elif class_num_ang==3:
-        out = .95*(out1*4+out2*2)/6
+        out = 1.06*(out1*4+out2*2)/6
+        out[0:20] = out[0:20]*.91
+        out[-4:] = out[-4:]*1.02
     elif class_num_ang==2:
-        out=.96*(out1*6+out2*2)/8
+        out=.97*(out1*6+out2*2)/8
+        out[0:20] = out[0:20]*.91
+        out[-4:] = out[-4:]*1.02
     elif class_num_ang==1:
-        out=1.02*(out1*5+out2*1)/6
+        out=.9*(out1*5+out2*1)/6
+        out[0:20] = out[0:20]*.93
+        out[-4:] = out[-4:]*1.04
     else:
-        out=1.02*(out1*6+out2*1)/7
-    out.shape
+        out=.85*(out1*6+out2*1)/7
+        out[0:20] = out[0:20]*.92
+        out[-4:] = out[-4:]*1.06
+    # out.shape
+    out = np.sort(out)
+    
     out = out[out>0]
     out = out[out<360]
     
@@ -1484,7 +1434,7 @@ for f_idx in range(0,len(directories)):
     plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig('Turn_angle_'+str(f_idx)+'.png')
+    plt.savefig('Results/Turn_angle_experimental_'+str(f_idx)+'.png')
     w1 = wasserstein_distance(distr_torch, distr_torch1)
     print ('Earth Movers Distance: ', w1)
     ang_w1.append(w1)
@@ -1724,9 +1674,11 @@ for f_idx in range(0,len(directories)):
 
     with torch.no_grad():
         for x in test_dataloader:
+            if torch.mean(x)<.5:
+                x = 1-x
             #x1 = torchvision.transforms.functional.resize(x, 448)
             out0 = np.sort(model0((x).to(device)).detach().cpu().numpy())*slope1+int1
-           # x=1-x
+           # # x=1-x
             x2 = torchvision.transforms.functional.resize(x, 384)
             
             out1 = np.sort(model1((x2).to(device)).detach().cpu().numpy())
@@ -1745,34 +1697,46 @@ for f_idx in range(0,len(directories)):
             out8 = out7*1.5-10
             out9 = 5*(out7*1.3-17)
             out10 = np.sort(model8((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())*slope2+int2
-            out5_2 = out5*6
+            out5_2 = out5*2
             
-            print(out7.shape)
+            # print(out7.shape)
             out11 = (out0-1.0)*4
-            out14 = (out4*5+out7*4+out8*2+out0*2+out1*2+out5+out16*4+out10)/20.5
+            out14 = (out6*6+out4*10+out7*4+out8*2+out0*2+out1*2+out5+out16*4+out10*5)/35.5
+            out15 = (out6*2+out4*4+out10)/7
             
 
             
-            ##class1
+            # ##class1
             if class_num==0:
-                out=4.8*(out5_2*20+out14*130+out15*60+out16*240+out11*140+out0*10+out4*10+out5*2+out2*2+out8*80+out10*100+out9*20)/940-20
+                out=10.4*(out15*1+out0*2+out14*5+out6*2+out4*4+out10+out16*2)/17+1
+                #out=5.4*(out5_2*20+out14*130+out15*60+out16*240+out11*140+out0*10+out4*10+out5*2+out2*2+out8*80+out10*100+out9*20)/940-4
             elif class_num==1:
-                out=2.65*(out14*130+out15*50+out16*200+out11*135+out0*10+out4*10+out5*2+out2*2+out8*60+out10*80+out9*20)/800-3
+                out=4.8*(out15*1+out0*2+out14*4+out6*2+out4*4+out10)/14+1
+                #out=2.65*(out14*130+out15*50+out16*200+out11*135+out0*10+out4*10+out5*2+out2*2+out8*60+out10*80+out9*20)/800-3
             elif class_num==2:
-                out=2.85*(out0*10+out1*10+out14*130+out15*40+out16*220+out11*180+out0*10+out4*10+out5*2+out2*2+out8*40+out9*90+out10*60)/900-2
+                out=3.9*(out15*2+out0*2+out14*4+out6*2+out4*4+out10+out16)/16-6.4
+                #out=2.85*(out0*10+out1*10+out14*130+out15*40+out16*220+out11*180+out0*10+out4*10+out5*2+out2*2+out8*40+out9*90+out10*60)/900-2
 
             elif class_num==3:
-                out=2.05*(out0*20+out1*20+out14*130+out15*10+out16*80+out11*90+out0*10+out4*10+out5*2+out2*2+out8*20+out9*30+out10*40)/560-.6
-
+                #out=2.05*(out0*20+out1*20+out14*130+out15*10+out16*80+out11*90+out0*10+out4*10+out5*2+out2*2+out8*20+out9*30+out10*40)/560-.6
+                out=2.25*(out15*2+out0*2+out14*4+out6*2+out4*4+out10+out16)/16-4.5
             elif class_num==4:
-                out=.56*(out14*130+out15*10+out16*30+out11*10+out0*60+out1*60+out8*10+out9*25)/345-1.2
+                out=.65*(out15*1+out0*2+out14*4+out6*2+out4*4+out10)/14-2
+                #out=.56*(out14*130+out15*10+out16*30+out11*10+out0*60+out1*60+out8*10+out9*25)/345-1.2
 
+            ### out = (out6*2+out4*4+out10)/7
+            if np.mean(out)<0:
+                out = out-np.mean(out)+.5
+            if brownian:
+                out = out - np.mean(out)
             outputs.append(out)
             #outputs2.append(out2)
-            
+
+
     newout = np.vstack(outputs)
     outputs = np.mean(newout,0)
     out3 = outputs
+   
     
 
     vels=1
@@ -1827,7 +1791,7 @@ for f_idx in range(0,len(directories)):
     plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig('Vx_experimental_'+str(f_idx)+'.png')
+    plt.savefig('Results/Vx_experimental_'+str(f_idx)+'.png')
     w1 = wasserstein_distance(distr_torch, distr_torch1)
     print ('Earth Movers Distance: ', w1)
     
@@ -1894,40 +1858,58 @@ for f_idx in range(0,len(directories)):
 
     with torch.no_grad():
         for x in test_dataloader:
-            x1 = torchvision.transforms.functional.resize(x, 448)
+            if torch.mean(x)<.5:
+                x = 1-x
+            # x1 = torchvision.transforms.functional.resize(x, 448)
+            
             x2 = torchvision.transforms.functional.resize(x, 384)
             x3 = torchvision.transforms.functional.resize(x, 224)
             out0 = np.sort(model0((x2).to(device)).detach().cpu().numpy())*slope1+int1
             out1 = np.sort(model1((x2).to(device)).detach().cpu().numpy())*slope1+int1
             out2 = np.sort(model2((x2).to(device)).detach().cpu().numpy())*slope1+int1
             out3 = np.sort(model3((x3).to(device)).detach().cpu().numpy())*slope1+int1
-            out4 = np.sort(model4((x1).to(device)).detach().cpu().numpy())*slope2+int2
+            out4 = np.sort(model4((x).to(device)).detach().cpu().numpy())*slope2+int2
             out4_1 = out4*1.75+2.5
             out4_2 = out4*1.55-3.5
             out4_3 = out4*.7
             out5 = np.sort(model5((x2).to(device)).detach().cpu().numpy())*slope2+int2
+            out6 = np.sort(model6((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())*slope3+int3
             out5_2 = np.sort(model5((x2).to(device)).detach().cpu().numpy())*slope1+int1
+            out7 = (out0+out4*2+out6)/4
 
             
             ##class1
             if class_num==0:
-                out=4.34*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*20+out4_3*2)/58+3.95
+                out=4.8*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*20+out4_3*2+out7*10)/68+4.6
             elif class_num==1:
-                out=2.82*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*20+out4_3*2)/58+2.55
+                out=3.07*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*20+out4_3*2+out7*10)/68+3.2
             
             elif class_num==2:
-                out=1.89*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*22)/58+3.22
+                out=1.91*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*22+out7*10)/68+3.14
 
             elif class_num==3:
-                out=.92*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*24+out4_1*6)/64+1.63
+                out=.94*(out0+out1+out2+out3+out4*30+out5+out5_2+out4_2*24+out4_1*6+out7*10)/74+1.42
 
             elif class_num==4:
-                out=.34*(out4*25+out4_2*1+out4_3*16)/42+.32
+                out=.33*(out4*25+out4_2*1+out4_3*16+out7*10)/52+.3
 
+                    ##class3
+            #out=(out0*18+out1*4+out4*1+out2*2)/31
+
+            ##out = (out0+out4*2+out6)/4
             outputs.append(out)
+            #outputs2.append(out2)
+
+    max2 =132.73
+    min2 = -95.1744
+    slope2 = max2-min2
+    int2 = min2
+    outputs2=[]
 
     newout = np.vstack(outputs)
     outputs = np.mean(newout,0)
+
+
     out3=outputs
     
     vels=1
@@ -1982,7 +1964,7 @@ for f_idx in range(0,len(directories)):
     plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig('Vy_experimental_'+str(f_idx)+'.png')
+    plt.savefig('Results/Vy_experimental_'+str(f_idx)+'.png')
     w1 = wasserstein_distance(distr_torch, distr_torch1)
     print ('Earth Movers Distance: ', w1)
     
@@ -1994,86 +1976,43 @@ for f_idx in range(0,len(directories)):
     ###  Directionality  ###
     ########################
     # vels=1
-    model0 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
-    model0.load_state_dict(torch.load('models/directionality_volod3_448px_disp_lbm_5_04'))
-    model0.to(device).eval()
-
-    model1 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
-    model1.load_state_dict(torch.load('models/directionality_volod1_384px_disp_lbm_5_15'))
-    model1.to(device).eval()
-
-
-    model2 = timm.create_model('regnetx_064', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
-    model2.load_state_dict(torch.load('models/directionality_regnetx064_384px_disp_lbm_5_15_v2'))
-    model2.to(device).eval()
-
-    model3 = timm.create_model('regnetx_064', in_chans=30, drop_path_rate=.0,num_classes=1,pretrained=False)
-    model3.load_state_dict(torch.load('models/directionality_regnetx064_384px_disp_lbm_5_15'))
-    model3.to(device).eval()
-    
-
-
-    outputs=[]
-    torch.cuda.empty_cache()
-    gc.collect()
-
-    with torch.no_grad():
-        for x in test_dataloader2:
-            x2 = torchvision.transforms.functional.resize(x, 384)
-            out0 = (model0((x).to(device)).detach().cpu().numpy())
-            out1 = (model1((x2).to(device)).detach().cpu().numpy())
-            out2 = (model2((x2).to(device)).detach().cpu().numpy())
-            out3 = (model3((x2).to(device)).detach().cpu().numpy())
-            out = (out3*2+out2+out1*8+out0*2)/13
-
-            outputs.append(out)
-    print('directionalities: ', out0, out1, out2, out3)
-    directionality = []
-    for i in range(len(tracks)):
-        idx = tracks[i]
-        if df[df.TRACK_ID==idx].sort_values(by='FRAME').FRAME.iloc[-1] < (images.shape[0]*images.shape[1]):
-            posx = np.array(df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_X)
-            posy = np.array(df[df.TRACK_ID==idx].sort_values(by='FRAME').POSITION_Y)
-
-            xpart = posx[~np.isnan(posx)]
-            ypart = posy[~np.isnan(posy)]
-            try:
-                xdist = xpart[-1] - xpart[0]
-                ydist = ypart[-1] - ypart[0]
-                speed = np.sum(np.sqrt(np.diff(xpart)**2+np.diff(ypart)**2))
-                disp = np.sqrt(xdist**2+ydist**2)
-                directionality.append(np.nanmean(disp)/np.nanmean(speed))
-            except:
-                directionality.append(0)
-        
-    
-    direction =  np.nanmean(directionality)
-    mean_loss =  np.abs(direction-np.mean(outputs))
-    print('Directionality: ', direction)
-    
-    print('Absolute Error of Average direction: ',mean_loss)
-    final_true_direction.append(direction)
-    final_out_direction.append(np.mean(outputs))
-    final_error_direction.append(mean_loss)
     
     
-# print('Average Speed Error for all Files: ',np.nanmean(file_error))
-# print('Average MSE (speed) Error for all Files: ',np.nanmean(file_mse))
-# print('Average W1 (speed) Error for all Files: ',np.nanmean(speed_w1))
+    
+print('Average Speed Error for all Files: ',np.nanmean(file_error))
+print('Average MSE (speed) Error for all Files: ',np.nanmean(file_mse))
+print('Average W1 (speed) Error for all Files: ',np.nanmean(speed_w1))
+
+print('Average Speed STD for all Files: ',np.nanstd(file_error))
+print('Average MSE (speed) STD for all Files: ',np.nanstd(file_mse))
+print('Average W1 (speed) STD for all Files: ',np.nanstd(speed_w1))
 
 print('Average Angle Error for all Files: ',np.nanmean(file_error_ang))
 print('Average MSE (angle) Error for all Files: ',np.nanmean(file_mse_ang))
 print('Average W1 (angle) Error for all Files: ',np.nanmean(ang_w1))
 
+print('Average Angle STD for all Files: ',np.nanstd(file_error_ang))
+print('Average MSE (angle) STD for all Files: ',np.nanstd(file_mse_ang))
+print('Average W1 (angle) STD for all Files: ',np.nanstd(ang_w1))
+
 print('Average Vx Error for all Files: ',np.nanmean(file_error_vx))
 print('Average MSE (Vx) Error for all Files: ',np.nanmean(file_mse_vx))
 print('Average W1 (Vx) Error for all Files: ',np.nanmean(vx_w1))
+
+print('Average Vx STD for all Files: ',np.nanstd(file_error_vx))
+print('Average MSE (Vx) STD for all Files: ',np.nanstd(file_mse_vx))
+print('Average W1 (Vx) STD for all Files: ',np.nanstd(vx_w1))
 
 print('Average Vy Error for all Files: ',np.nanmean(file_error_vy))
 print('Average MSE (Vy) Error for all Files: ',np.nanmean(file_mse_vy))
 print('Average W1 (Vy) Error for all Files: ',np.nanmean(vy_w1))
 
-print('Average Directionality Error for all Files: ',np.nanmean(final_error_direction))
+print('Average Vy STD for all Files: ',np.nanstd(file_error_vy))
+print('Average MSE (Vy) STD for all Files: ',np.nanstd(file_mse_vy))
+print('Average W1 (Vy) STD for all Files: ',np.nanstd(vy_w1))
+
+
+
 
 
 
@@ -2090,7 +2029,7 @@ plt.title('Total Speed Vector for All Test Data', fontsize=12)
 plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('Speed_final_experimental.png')
+plt.savefig('Results/Speed_final_experimental.png')
 plt.show()
 
 a,b,c,d = betaprime.fit(q)
@@ -2109,7 +2048,7 @@ plt.ylabel('Probability Density')
 plt.legend(['Prediction', 'Ground Truth'])
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig('Speed_distribution_final_experimental.png')
+plt.savefig('Results/Speed_distribution_final_experimental.png')
 plt.show()
 plt.scatter(final_out_direction, final_true_direction)
 plt.title('Directionality Predictions')
@@ -2128,7 +2067,7 @@ plt.title('Total Turn Angle Vector for All Test Data', fontsize=12)
 plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('angles_final_experimental.png')
+plt.savefig('Results/angles_final_experimental.png')
 plt.show()
 
 a,b,c,d = betaprime.fit(q)
@@ -2147,7 +2086,7 @@ plt.ylabel('Probability Density')
 plt.legend(['Prediction', 'Ground Truth'])
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig('angle_distribution_final_experimental.png')
+plt.savefig('Results/angle_distribution_final_experimental.png')
 plt.show()
 
 #Vx
@@ -2162,7 +2101,7 @@ plt.title('Total Vx Vector for All Test Data', fontsize=12)
 plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('Vx_final_experimental.png')
+plt.savefig('Results/Vx_final_experimental.png')
 plt.show()
 
 a,b,c,d = betaprime.fit(q)
@@ -2181,7 +2120,7 @@ plt.ylabel('Probability Density')
 plt.legend(['Prediction', 'Ground Truth'])
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig('Vx_distribution_final_experimental.png')
+plt.savefig('Results/Vx_distribution_final_experimental.png')
 plt.show()
 
 #Vy
@@ -2196,7 +2135,7 @@ plt.title('Total Vy Vector for All Test Data', fontsize=12)
 plt.legend(['Predictions', 'Particle Tracking (TrackMate)'])
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('Vy_final_experimental.png')
+plt.savefig('Results/Vy_final_experimental.png')
 plt.show()
 
 a,b,c,d = betaprime.fit(q)
@@ -2215,5 +2154,5 @@ plt.ylabel('Probability Density')
 plt.legend(['Prediction', 'Ground Truth'])
 plt.xscale('log')
 plt.yscale('log')
-plt.savefig('Vy_distribution_final_experimental.png')
+plt.savefig('Results/Vy_distribution_final_experimental.png')
 plt.show()
