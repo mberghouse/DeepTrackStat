@@ -20,8 +20,6 @@ DeepTrackStat has been successfully applied to diverse PT scenarios including tr
   Separately analyses horizontal (Vx) and vertical (Vy) velocity components.
 - **Turn Angle Prediction**  
   Estimates turn angle statistics to quantify directional changes in particle movement.
-- **Directionality & Dispersion**  
-  Evaluates directional persistence and computes dispersion coefficients to characterize particle spread.
 - **Robustness to Variability**  
   The framework is designed to work effectively with variable particle sizes, shapes, brightness, speed, density, and noise levels.
 - **Visualization & Comparison**  
@@ -29,15 +27,18 @@ DeepTrackStat has been successfully applied to diverse PT scenarios including tr
 
 ## Repository Structure
 
-- **README.md**: This file describing the project and its context.  
-- **test_simulated.py**: Scripts for analyzing simulated particle trajectories and evaluating model predictions.  
-- **test_experimental.py**: Scripts for processing experimental datasets and comparing deep learning predictions with classical tracking.  
-- **test.py**: Additional examples and evaluation scripts.  
-- **dispersion_coeffs.py**: Code for calculating particle dispersion coefficients using linear regression over trajectory variances.  
-- **dispersion_coeff_NN.ipynb**: An interactive notebook demonstrating dispersion coefficient computation.  
-- **models/**: Folder containing pretrained deep learning models for speed classification, turn angle prediction, and directionality estimation.  
-- **Results/**: Directory where all output figures and analysis results are saved.  
-- **.gitignore**: Lists model checkpoints and other files that should be excluded from version control.
+- **README.md**: Project overview and documentation
+- **testing/**: Main directory containing test scripts and evaluation code
+  - **uncalibrated_test.py**: Evaluation script for uncalibrated model performance
+  - **calibrated_test.py**: Evaluation script for calibrated model performance
+  - **old_test_scripts/**: Archive of previous testing implementations
+    - **test.py**: Original testing framework
+    - **test_simulated.py**: Evaluation on simulated particle trajectories
+    - **test_experimental.py**: Evaluation on experimental datasets
+- **training/**: Main directory containing training notebooks
+- **models/**: Folder that contains all 93 pretrained deep learning models. You must download the models from https://zenodo.org/records/14879357.
+- **Results/**: Generated outputs and visualizations
+- **.gitignore**: Version control exclusions
 
 ## Getting Started
 
@@ -60,34 +61,30 @@ Clone the repository:
 git clone https://github.com/yourusername/DeepTrackStat.git
 ```
 
-Install the required packages:
-
-```
-pip install -r requirements.txt
-```
-
-Ensure all dependencies are installed before running the scripts.
+Ensure all prerequisites listed above are installed before running the scripts.
 
 ### Usage
 
-To analyze simulated particle videos, run:
+First, go to https://zenodo.org/records/14879357 and download all the model weights for DTS. Place these model weights in a folder called models that will have the path "DeepTrackStat/models/"
+
+To analyze simulated particle videos with the calibrated model, run:
 
 ```
-python test_simulated.py
+python testing/calibrated_test.py
 ```
 
-For experimental datasets, use:
+For the uncalibrated model, use:
 
 ```
-python test_experimental.py
+python testing/uncalibrated_test.py
 ```
 
-Additional scripts (e.g., `test.py`) are provided for further evaluation and demonstration of model performance and statistical comparisons.
+For training, please use the notebooks in the "training" folder as a guide. The basic idea is that you need to calculate the statistics from the ground truth trajectories and train the model to predict these statistics given the respective imagery.
 
 
 ## Acknowledgments
 
-We gratefully acknowledge the contributions of the research community and the developers of PyTorch and timm, whose tools have made this work possible. Special thanks to the teams behind classical particle tracking methods whose work laid the foundation for this research.
+This research is based upon work supported by the U.S. Department of Energy (DOE) under award number DE-SC0019437.
 
 ## Contact
 
