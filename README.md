@@ -84,17 +84,6 @@ python test_experimental.py
 
 Additional scripts (e.g., `test.py`) are provided for further evaluation and demonstration of model performance and statistical comparisons.
 
-## Research Context
-
-Traditional particle tracking methods typically require extensive preprocessing and parameter tuning to reliably link features in high-resolution, low-signal videos. DeepTrackStat addresses these challenges by directly learning statistical representations of particle motion using deep convolutional neural networks. This not only simplifies the analysis pipeline but also provides robust performance even under challenging imaging conditions. If you are using DeepTrackStat in your research, please consider citing our work as follows:
-
-```
-[Your Citation Here]
-```
-
-## License
-
-[Specify your license here, e.g., MIT License]
 
 ## Acknowledgments
 
@@ -104,8 +93,7 @@ We gratefully acknowledge the contributions of the research community and the de
 
 For further information or questions, please contact:
 
-[Your Name]  
-[Your Email Address]
+marc.berghouse@gmail.com
 
 ---
 
