@@ -23,6 +23,8 @@ import torchvision
 target_length=500
 device='cuda'
 
+
+
 def classifier(dataloader, constants, weights):
     class Net(nn.Module):
         def __init__(self):
@@ -1374,53 +1376,36 @@ for f_idx in range(26,len(directories)):
     angles_gt = angles_gt[angles_gt>0]
     angles_gt = angles_gt[angles_gt<360]
     
-    class Net0(nn.Module):
+    class Net1_ang(nn.Module):
         def __init__(self):
-            super(Net0, self).__init__()
-            self.m1 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=True)
+            super(Net1_ang, self).__init__()
+            self.m1 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0.5,num_classes=2000,pretrained=True)
+            self.fc1=nn.Linear(2000,1000)
+            self.fc2 = nn.Linear(1000,500)
 
         def forward(self, x):
             x = self.m1(x)
+            x = F.gelu(self.fc1(x))
+            x = self.fc2(x)
 
-    model0 = timm.create_model('volo_d3_448', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=False)
-    model0.load_state_dict(torch.load('models/turn_angle_model_volod3_448px_disp_all_4_25'))
-    model0.to(device).eval()
+            return x
 
-    model1 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=False)
-    model1.load_state_dict(torch.load('models/turn_angle_model_Volod1_384_dispBrownv4'))
-    model1.to(device).eval()
-
-    model2 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=False)
-    model2.load_state_dict(torch.load('models/turn_angle_model_Volod1_384_dispBrownv3'))
-    model2.to(device).eval()
-
-    model3 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=False)
-    model3.load_state_dict(torch.load('models/turn_angle_model_Volod1_384_dispBrownv2'))
-    model3.to(device).eval()
-
-    model4 = timm.create_model('volo_d1_384', in_chans=40, drop_path_rate=0,num_classes=500,pretrained=False)
-    model4.load_state_dict(torch.load('models/turn_angle_model_Volod1_384_dispBrown'))
-    model4.to(device).eval()
-
-    model5 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=0,num_classes=500,pretrained=False)
-    model5.load_state_dict(torch.load('models/angle_model_volod3_448px_disp_all_5_5'))
-    model5.to(device).eval()
-
-    model6 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=0,num_classes=500,pretrained=False)
-    model6.load_state_dict(torch.load('models/angle_model_volod1_384px_disp_all_5_5'))
-    model6.to(device).eval()
-
-    model7 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=0,num_classes=500,pretrained=False)
-    model7.load_state_dict(torch.load('models/angle_model_volod1_384px_disp_all_5_5_v2'))
-    model7.to(device).eval()
-
-    model8 = timm.create_model('volo_d1_384', in_chans=30, drop_path_rate=0,num_classes=500,pretrained=False)
-    model8.load_state_dict(torch.load('models/angle_model_volod1_384px_disp_all_5_5_v3'))
-    model8.to(device).eval()
+    model10_ang = Net1_ang()
+    model10_ang.load_state_dict(torch.load('../models/angle_model_net1_volod1_384px_disp_lbm'))
+    model10_ang.to(device).eval()
     
-    model9 = timm.create_model('volo_d3_448', in_chans=30, drop_path_rate=0,num_classes=500,pretrained=False)
-    model9.load_state_dict(torch.load('models/angle_model_volod3_448px_disp_lbm_5_7'))
-    model9.to(device).eval()
+    model11_ang = Net1_ang()
+    model11_ang.load_state_dict(torch.load('../models/angle_model_net1_volod1_384px_disp_lbm_v2'))
+    model11_ang.to(device).eval()
+    
+    model12_ang = Net1_ang()
+    model12_ang.load_state_dict(torch.load('../models/angle_model_net1_volod1_384px_disp_lbm_v3'))
+    model12_ang.to(device).eval()
+    
+    model13_ang = Net1_ang()
+    model13_ang.load_state_dict(torch.load('../models/angle_model_net1_volod1_384px_disp_lbm_v4'))
+    model13_ang.to(device).eval()
+
     
     #constants = [115,0,0.25,.289,.246,+.02]
     #weights = [['11',5],
@@ -1453,162 +1438,48 @@ for f_idx in range(26,len(directories)):
     print('Class Number for Angles: ',class_num_ang)
     print(mean_out)
     outputs_ang=[]
+    straight_indices = [26,27,28,29]
+
+    outputs_ang=[]
     with torch.no_grad():
         for x in test_dataloader:
-            if torch.mean(x)<.5:
+            if torch.mean(x)>.5:
                 x = 1-x
             #x1 = torchvision.transforms.functional.resize(x, 448)
             x2 = tv.transforms.functional.resize(x, 384)
+            out0 =np.sort(model10_ang((x2).to(device)).detach().cpu().numpy())
+            out1 =np.sort(model11_ang((x2).to(device)).detach().cpu().numpy())
+            out2 =np.sort(model12_ang((x2).to(device)).detach().cpu().numpy())
+            out3 =np.sort(model13_ang((x2).to(device)).detach().cpu().numpy())
 
-            out0 =np.sort(model0((x).to(device)).detach().cpu().numpy())
-            out1 =np.sort(model1((x2).to(device)).detach().cpu().numpy())*.6
-            out2 =np.sort(model2((x2).to(device)).detach().cpu().numpy())*.55
-            out3 =np.sort(model3((x2).to(device)).detach().cpu().numpy())*.55
-            out4 =np.sort(model4((x2).to(device)).detach().cpu().numpy())*.5
-            out5 = out4*.03
-            #out4 = out4*1000-27304
+            out = (out0*3+out1*3+out2*3+out3*4)/14
+            if not brownian:
+                out=out*1.07-0.4
 
-
-            if class_num_ang==4:
-                out=(out2*4+out1*5+out0*2+out4)/11
-            elif class_num_ang==3:
-                out=(out0*10+out2*2+out1*4+out3*4+out4*5)/25
-            elif class_num_ang==2:
-                out=(out0+out1+out4+out3*3)/6
-            elif class_num_ang==1:
-                out=(out0*3+out4*1+out3*4)/8
-            elif class_num_ang==0:
-                out=(out0*4+out4*1)/5
+                if class_num==0:
+                    out = out*1.03
+                elif class_num==1:
+                    out = out*.94
+                elif class_num==2:
+                    out = out*1.06
+                elif class_num==3:
+                    out = out*1.06
+                else:
+                    out = out*1.19
             else:
-                out=(out5*100+out2*4+out1*4+out0*2+out4*10)/120
+                out = out*1.06
+                    
             out[:,0] = 0.0001
             out[:,1] = 0.001
-            out[:,2] = 0.0011
+            # out[:,2] = 0.01
+
+            if (np.min(straight_indices)<=f_idx <=np.max(straight_indices)):
+                if np.mean(out)>10:
+                    out = out*.2    
+            
             outputs_ang.append(np.sort(out))
-    # with torch.no_grad():
-    #     for x in test_dataloader:
-    #         #x1 = torchvision.transforms.functional.resize(x, 448)
-    #         x2 = tv.transforms.functional.resize(x, 384)
-
-    #         out0 =np.sort(model0((x).to(device)).detach().cpu().numpy())
-    #         out1 =np.sort(model1((x2).to(device)).detach().cpu().numpy())*.6
-    #         out2 =np.sort(model2((x2).to(device)).detach().cpu().numpy())*.6
-    #         out3 =np.sort(model3((x2).to(device)).detach().cpu().numpy())*.6
-    #         out4 =np.sort(model4((x2).to(device)).detach().cpu().numpy())*.6
-    #         out5 =np.sort(model5((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-    #         out6 =np.sort(model6((x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-    #         out7 =np.sort(model7((x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-    #         out8 =np.sort(model8((x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-    #         out9 =np.sort(model9((x[:,5:35,:,:]).to(device)).detach().cpu().numpy())
-    #         out10 =np.sort(model8((x2[:,5:35,:,:]).to(device)).detach().cpu().numpy())*1.08
-    #         out05=(out5*9+out0*5+out4*5+out8*4+out2*2+out1+out10*.5+out3*.5)/27
-    #         out04=(out5*1+out6*5+out7*12+out8*2+out10*14)/34
-    #         out03=(out5*8+out6*3+out7*4+out8*2+out9*4+out10*6)/25
-    #         out02=(out9*3+out5*5+out8+out10*3+out7*2)/14
-    #         out01=(out9*2+out5*2+out10)/5
-    #         out00=(out9*2+out5*2+out7)/5
-
-
-    #         if class_num_ang==4:
-    #             out=.9*(out05*4+out04*3+out2*4+out1*5+out0*2)/17
-    #         elif class_num_ang==3:
-    #             out=.95*(out05*6+out03*5+out0*10+out2*2+out1*4+out3*4+out4*5)/36
-    #         elif class_num_ang==2:
-    #             out=(out05*3+out02*2+out0+out1+out4+out3*3)/11
-    #         elif class_num_ang==1:
-    #             out=1.05*(out05*4+out01*3+out0*3+out4*1+out3*4)/15
-    #         else:
-    #             out=1.1*(out05*2+out00*2+out0*4+out4*1)/9
-    #         out[:,0] = 0.0001
-    #         out[:,1] = 0.001
-    #         outputs_ang.append(out)
-          
-    outputs2_ang=[]
-    import torchvision
-    with torch.no_grad():
-        for x in test_dataloader2:
-            if torch.mean(x)<.5:
-                x = 1-x
-            x1 = torchvision.transforms.functional.resize(x, 448)
-            x2 = tv.transforms.functional.resize(x, 384)
-
-            out5 =np.sort(model5((x).to(device)).detach().cpu().numpy())
-            out6 =np.sort(model6((x2).to(device)).detach().cpu().numpy())
-            out7 =np.sort(model7((x2).to(device)).detach().cpu().numpy())
-            out8 =np.sort(model8((x2).to(device)).detach().cpu().numpy())
-            out9 =np.sort(model9((x).to(device)).detach().cpu().numpy())
-            out10 =out8*1.04
-            out11 =out8*.04
-
-            if class_num_ang==4:
-                out=(out5*1+out6*5+out7*12+out8*2+out10*14)/34
-            elif class_num_ang==3:
-                out=(out5*8+out6*3+out7*4+out8*2+out9*4+out10*6)/25
-            elif class_num_ang==2:
-                out=(out9*3+out5*5+out8+out10*3+out7*2)/14
-            elif class_num_ang==1:
-                out=(out9*2+out5*2+out10)/5
-            elif class_num_ang==0:
-                out=(out9*2+out5*2+out7)/5
-            else:
-                out=(out11*100+out5*1+out6*5+out7*12+out8*2+out10*14)/134
-            out[:,0] = 0.0001
-            out[:,1] = 0.001
-            out[:,2] = 0.0011
-            #out=out0
-            # elif class_num==2:
-            #     out=out1
-            #out = (out0+out1+out2)/2
-
-            outputs2_ang.append(np.sort(out))
-    
-    # # print('0: ',np.mean(out0), np.min(out0), np.max(out0))
-    # # print('1: ',np.mean(out1), np.min(out1), np.max(out1))
-    # # print('2: ',np.mean(out2), np.min(out2), np.max(out2))
-    # # print('3: ',np.mean(out3), np.min(out3), np.max(out3))
-    # # print('4: ',np.mean(out4), np.min(out4), np.max(out4))
-    # # print('5: ',np.mean(out5), np.min(out5), np.max(out5))
-    # # print('6: ',np.mean(out6), np.min(out6), np.max(out6))
-    # # print('7: ',np.mean(out7), np.min(out7), np.max(out7))
-    # # print('8: ',np.mean(out8), np.min(out8), np.max(out8))
-    # # print('9: ',np.mean(out9), np.min(out9), np.max(out9))
-    # # print('10: ',np.mean(out10), np.min(out10), np.max(out10))
-
-    # #print('next batch')  
-    newout1 = np.vstack(outputs_ang)
-    out1 = np.mean(np.abs(newout1),0)
-    out1=out1[out1>0]
-
-    newout2=np.vstack(outputs2_ang)
-    out2 = np.mean(np.abs(newout2),0)
-    out2=out2[out2>0]
-
-    out1 = interpolate_vectors(out1,len(out2))
-    print('final 1: ',np.mean(out1))
-    print('final 2: ',np.mean(out2))
-
-
-    if class_num_ang==4:
-        out = 1.22*(out1*1+out2*4)/5
-        out[0:20] = out[0:20]*.84
-        out[-4:] = out[-4:]*1.04
-    elif class_num_ang==3:
-        out = 1.06*(out1*4+out2*3)/7
-        out[0:20] = out[0:20]*.94
-        out[-4:] = out[-4:]*1.06
-    elif class_num_ang==2:
-        out=.97*(out1*5+out2*2)/7
-        out[0:20] = out[0:20]*.88
-        out[-4:] = out[-4:]*1.06
-    elif class_num_ang==1:
-        out=.9*(out1*4+out2*1)/5
-        out[0:20] = out[0:20]*.88
-        out[-4:] = out[-4:]*1.08
-    else:
-        out=.85*(out1*5+out2*1)/6
-        out[0:20] = out[0:20]*.88
-        out[-4:] = out[-4:]*1.08
-    # out.shape
+            
+    out = np.mean(np.vstack(outputs_ang),0)
     out = np.sort(out)
     
     out = out[out>0]
